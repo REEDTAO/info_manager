@@ -6,16 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="info_manager" />
+        <module name="mybatisgenerator" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="info_manager" target="1.8" />
+      <module name="mybatisgenerator" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="info_manager" options="-parameters" />
+      <module name="mybatisgenerator" options="-parameters" />
     </option>
   </component>
 </project>
