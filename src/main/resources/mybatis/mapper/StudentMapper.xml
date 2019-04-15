@@ -11,6 +11,21 @@
 
     <!--int inssertStudent(Student student);-->
     <insert id="inssertStudent">
-        insert  into student values (#{studentId},#{name},#{password},#{className},#{tel},#{sex})
+        insert  into student values (#{studentId},#{name},#{className},#{tel},#{addr},#{email},#{sex},#{password})
+    </insert>
+
+    <!--int inssertStudentList(List<Student> student);-->
+    <insert id="inssertStudentList">
+        insert  into student values
+        <foreach collection="list" item="student" separator=",">
+            (#{student.studentId},
+             #{student.name},
+             #{student.className},
+             #{student.tel},
+             #{student.addr},
+             #{student.email},
+             #{student.sex},
+             #{student.password})
+        </foreach>
     </insert>
 </mapper>
