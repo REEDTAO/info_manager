@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reed.info_manager.mapper.StudentMapper">
+
+    <!--List<Student> selectAllStudent();-->
+    <select id="selectAllStudent" resultType="com.reed.info_manager.entity.Student">
+        select * from student
+    </select>
+
+    <!--int inssertStudent(Student student);-->
+    <insert id="inssertStudent">
+        insert  into student values (#{studentId},#{name},#{password},#{className},#{tel},#{sex})
+    </insert>
+</mapper>
