@@ -11,12 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @Autowired
-    StudentMapper studentMapper;
 
-    @GetMapping("/hello")
-    public String sayHello(){
-        return studentMapper.selectAllStudent().toString();
-    }
 
 }
