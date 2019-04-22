@@ -1,15 +1,15 @@
 package com.reed.info_manager.entity;
 
+
 import lombok.Data;
 
 @Data
-public class Student {
-    String studentId;
+public class User{
+    Integer id;
     String name;
-    String className;
-    String tel;
+    String password;
     String addr;
     String email;
+    String tel;
     String sex;
-    String password;
 }

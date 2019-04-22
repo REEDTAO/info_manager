@@ -8,8 +8,11 @@ spring:
 
   resources:
     static-locations: classpath:/static/,classpath:/templates/
-
-
+  thymeleaf:
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
 
 
 server:
@@ -19,3 +22,6 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mybatis/mapper/*.xml
+logging:
+  level:
+    com.reed.info_manager.mapper: debug

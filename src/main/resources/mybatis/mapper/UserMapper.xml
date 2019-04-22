@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reed.info_manager.mapper.UserMapper">
+
+    <!--User selectUserByIdAndPassword(String id, String password);-->
+    <select id="selectUserByIdAndPassword" resultType="com.reed.info_manager.entity.User">
+        select * from user where id=#{id} and password=#{password}
+    </select>
+
+    <!--int addUsers(List<User> list);-->
+    <insert id="addUsers" >
+        insert into user(id,name,password,addr,email,tel,sex) values
+        <foreach collection="list" item="user" separator=",">
+            (
+            default,
+            #{user.name},
+            #{user.password},
+            #{user.addr},
+            #{user.email},
+            #{user.tel},
+            #{user.sex}
+            )
+        </foreach>
+    </insert>
+</mapper>
