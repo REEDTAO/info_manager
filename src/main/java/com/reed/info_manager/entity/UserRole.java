@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class UserRole {
-    String userRoleId;
-    String userId;
-    String userGroupId;
+    Integer userRoleId;
+    Integer userId;
+    Integer userGroupId;
+    String userGroupName;
 }

@@ -7,4 +7,7 @@ public class UserGroup {
     String userGroupId;
     String name;
     String creatorId;
+    String creatorName;
+
+
 }

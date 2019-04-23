@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reed.info_manager.mapper.UserRoleMapper">
+
+    <!--int insertUserRole(UserRole userRole);-->
+    <insert id="insertUserRole" >
+        insert into user_role values(default,#{userId},#{userGroupId},#{userGroupName})
+    </insert>
+
+    <!--UserRole selectUserRoleByUserRole(UserRole userRole);-->
+    <select id="selectUserRoleByUserRole" resultType="com.reed.info_manager.entity.UserRole">
+        select * from user_role
+        where user_group_id=#{userGroupId}
+        and user_id = #{userId}
+        and user_group_name= #{userGroupName}
+    </select>
+</mapper>

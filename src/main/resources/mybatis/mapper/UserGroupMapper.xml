@@ -8,13 +8,19 @@
 
     <!--int addGroup(Integer id, String groupName);-->
     <insert id="addGroup" >
-        insert into user_group values(default,#{groupName},#{id})
+        insert into user_group values(default,#{groupName},#{id},#{creatorName})
     </insert>
 
     <!--List<UserGroup> selectAllGroupById(Integer id);-->
     <select id="selectAllGroupById" resultType="com.reed.info_manager.entity.UserGroup">
         select * from user_group where creator_id = #{id}
     </select>
+
+    <!--List<UserGroupJoin> selectAllGroupByGroupName(String name);-->
+    <select id="selectAllGroupByGroupName" resultType="com.reed.info_manager.entity.UserGroupJoin">
+        select * from user_group where name LIKE CONCAT('%',#{name},'%')
+    </select>
+
 
     <!--int deleteGroup(Integer id, String groupName);-->
     <delete id="deleteGroup" >

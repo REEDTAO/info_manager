@@ -1,9 +1,13 @@
 package com.reed.info_manager.controller;
 
+
 import com.reed.info_manager.entity.User;
 import com.reed.info_manager.entity.UserGroup;
+import com.reed.info_manager.entity.UserGroupJoin;
+import com.reed.info_manager.entity.UserRole;
 import com.reed.info_manager.service.UserGroupService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.reed.info_manager.service.UserRoleService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.reed.info_manager.constant.Constant.FAIL_JOIN_USER_ROLE;
 
 @Controller
 @RequestMapping("/task/group")
@@ -24,6 +33,8 @@ public class TaskGroupController {
     HttpSession session;
     @Autowired
     UserGroupService userGroupService;
+    @Autowired
+    UserRoleService userRoleService;
 
     final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);
 
@@ -42,7 +53,7 @@ public class TaskGroupController {
     public String addGroup(@PathVariable String groupName, Model model){
         User user = (User) session.getAttribute("user");
 
-        if(userGroupService.addGroup(user.getId(),groupName)==1){
+        if(userGroupService.addGroup(user.getId(),groupName,user.getName())==1){
             model.addAttribute("message","添加成功！");
             return "redirect:/task/group/myCreate";
         }
@@ -58,5 +69,37 @@ public class TaskGroupController {
         }
         model.addAttribute("message","删除失败，请联系管理员修改！");
         return "redirect:/task/group/myCreate";
+    }
+
+    @GetMapping("/myJoin")
+    public String myJoin(){
+        return "taskGroup/taskGroupJoin";
+    }
+
+    @GetMapping("/Join/{id}/{name}")
+    public String join(@PathVariable("id") Integer id,@PathVariable("name") String name,Model model){
+        User user = (User)session.getAttribute("user");
+        UserRole userRole = new UserRole();
+        userRole.setUserGroupId(id);
+        userRole.setUserGroupName(name);
+        userRole.setUserId(user.getId());
+        if(userRoleService.joinUserGroup(userRole)==FAIL_JOIN_USER_ROLE){
+            model.addAttribute("message","添加失败，请确认是否重复添加！");
+        }else{
+            model.addAttribute("message","添加成功！");
+        }
+        return "taskGroup/taskGroupJoin";
+
+    }
+
+
+    @GetMapping("/searchGroup/{name}")
+    @ResponseBody
+    public Map searchGroup(@PathVariable String name){
+        List<UserGroupJoin> list = userGroupService.searchGroupByNameForPage(name);
+        System.out.println(list);
+        HashMap<String ,Object> map = new HashMap<>();
+        map.put("data",list);
+        return map;
     }
 }
