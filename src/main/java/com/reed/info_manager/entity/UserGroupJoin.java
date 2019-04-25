@@ -8,9 +8,9 @@ public class UserGroupJoin extends UserGroup{
     String joinUrl;
 
     @Override
-    public void setUserGroupId(String creatorId) {
-        super.setUserGroupId(creatorId);
-        joinUrl="<a href='./Join/" + userGroupId + "/" + name + "'>加入</a>";
+    public void setName(String name) {
+        super.setName(name);
+        joinUrl="<button class='btn btn-default' onclick='joinGroup(this)' url='./Join/" + userGroupId + "/" + name + "'>加入</button>";
     }
 
 }

@@ -16,4 +16,9 @@
         and user_id = #{userId}
         and user_group_name= #{userGroupName}
     </select>
+
+    <!--List<UserGroup> selectMyJoinUserGroup(Integer id);-->
+    <select id="selectMyJoinUserGroup" resultType="com.reed.info_manager.entity.UserGroup">
+        select * from user_group where user_group_id in (select  role.user_group_id from user_role role where user_id = #{id})
+    </select>
 </mapper>

@@ -72,23 +72,33 @@ public class TaskGroupController {
     }
 
     @GetMapping("/myJoin")
-    public String myJoin(){
+    public String myJoin(Model model){
+        //前端页面修改，添加已加入任务组的查看
+        User user = (User) session.getAttribute("user");
+        List<UserGroup> list =userRoleService.searchMyJoinUserGroup(user.getId());
+        model.addAttribute("list",list);
         return "taskGroup/taskGroupJoin";
     }
 
+    /**
+     * 添加任务组：前端使用ajax提起请求返回的String信息通过alert显示
+     * @param id
+     * @param name
+     * @return
+     */
     @GetMapping("/Join/{id}/{name}")
-    public String join(@PathVariable("id") Integer id,@PathVariable("name") String name,Model model){
+    @ResponseBody
+    public String join(@PathVariable("id") Integer id,@PathVariable("name") String name){
         User user = (User)session.getAttribute("user");
         UserRole userRole = new UserRole();
         userRole.setUserGroupId(id);
         userRole.setUserGroupName(name);
         userRole.setUserId(user.getId());
         if(userRoleService.joinUserGroup(userRole)==FAIL_JOIN_USER_ROLE){
-            model.addAttribute("message","添加失败，请确认是否重复添加！");
+            return "添加失败，请确认是否重复添加！";
         }else{
-            model.addAttribute("message","添加成功！");
+            return "添加成功！";
         }
-        return "taskGroup/taskGroupJoin";
 
     }
 

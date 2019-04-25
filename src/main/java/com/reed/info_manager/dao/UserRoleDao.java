@@ -1,10 +1,13 @@
 package com.reed.info_manager.dao;
 
 
+import com.reed.info_manager.entity.UserGroup;
 import com.reed.info_manager.entity.UserRole;
 import com.reed.info_manager.mapper.UserRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.reed.info_manager.constant.Constant.FAIL_JOIN_USER_ROLE;
 
@@ -17,5 +20,11 @@ public class UserRoleDao {
         if (userRoleMapper.selectUserRoleByUserRole(userRole)==null)
         return userRoleMapper.insertUserRole(userRole);
         else return FAIL_JOIN_USER_ROLE;
+    }
+
+
+
+    public List<UserGroup> searchMyJoinUserGroup(Integer id) {
+        return userRoleMapper.selectMyJoinUserGroup(id);
     }
 }
