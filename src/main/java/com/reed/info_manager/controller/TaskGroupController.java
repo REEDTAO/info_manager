@@ -13,10 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -24,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.reed.info_manager.constant.Constant.FAIL_JOIN_USER_ROLE;
+import static com.reed.info_manager.constant.Constant.SUCCESS;
 
 @Controller
 @RequestMapping("/task/group")
@@ -72,11 +71,12 @@ public class TaskGroupController {
     }
 
     @GetMapping("/myJoin")
-    public String myJoin(Model model){
+    public String myJoin(Model model, @RequestParam(required = false,value = "message") String message){
         //前端页面修改，添加已加入任务组的查看
         User user = (User) session.getAttribute("user");
         List<UserGroup> list =userRoleService.searchMyJoinUserGroup(user.getId());
         model.addAttribute("list",list);
+        if(message!=null)model.addAttribute("message",message);
         return "taskGroup/taskGroupJoin";
     }
 
@@ -111,5 +111,18 @@ public class TaskGroupController {
         HashMap<String ,Object> map = new HashMap<>();
         map.put("data",list);
         return map;
+    }
+
+    @GetMapping("/role/delete/{userGroupId}")
+    public String deleteRoleByGroupId(@PathVariable Integer userGroupId, Model model, RedirectAttributes attr){
+        User user = (User) session.getAttribute("user");
+
+        if(userRoleService.deleteUserRoleByUserGroupId(user.getId(),userGroupId)==SUCCESS){
+            attr.addFlashAttribute("message","删除成功！");
+        }else{
+            attr.addFlashAttribute("message","删除失败，请联系管理员删除！");
+        }
+        return "redirect:/task/group/myJoin";
+
     }
 }

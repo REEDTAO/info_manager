@@ -330,7 +330,7 @@
             </span>
           </a>
         </li>
-        <li class="treeview active">
+        <li class="treeview ">
           <a href="pages/widgets.html">
             <i class="fa fa-th "></i> <span>任务组</span>
             <span class="pull-right-container">
@@ -339,25 +339,25 @@
           </a>
           <ul class="treeview-menu ">
             <li class=""><a href=""><i class="fa fa-circle-o"></i>我创建的任务组</a></li>
-            <li class="active"><a href=""><i class="fa fa-circle-o"></i>我加入的任务组</a></li>
+            <li class=""><a href=""><i class="fa fa-circle-o"></i>我加入的任务组</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview active">
           <a href="pages/widgets.html">
             <i class="fa fa-th"></i> <span>任务</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-            <li class="treeview">
+          <ul class="treeview-menu ">
+            <li class="treeview active">
               <a href=""><i class="fa fa-circle-o"></i>创建任务
               <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
-              <ul class="treeview-menu">
-                <li class=""><a href=""><i class="fa fa-circle-o"></i>创建</a></li>
+              <ul class="treeview-menu active">
+                <li class="active"><a href=""><i class="fa fa-circle-o"></i>创建</a></li>
                 <li class=""><a href=""><i class="fa fa-circle-o"></i>未完成</a></li>
                 <li class=""><a href=""><i class="fa fa-circle-o"></i>已完成</a></li>
               </ul>
@@ -408,88 +408,18 @@
 
   <!-- Content Wrapper. Contains page content -->
 
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        任务组
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> 任务组</a></li>
-        <li><a href="#">我加入的任务组</a></li>
-      </ol>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-            <div class="box box-default collapsed-box">
-              <div class="box-header ">
-
-                <div class=" col-xs-3 ">
-                    <input type="text" placeholder="请输入任务组名" class="form-control " id="searchName" required>
-                </div>
-
-                  <div class="col-xs-1 ">
-                    <button class="btn btn-primary " style="float: left" onclick="search()">搜索</button>
-                  </div>
-                  <div class=" box-tools ">
-                      <button type="button" class="btn btn-box-tool " data-widget="collapse">
-                          <i class="fa fa-plus"></i>
-                      </button>
-                  </div>
-              </div>
-              <!-- /.box-header -->
-              <div class="box-body">
-                <table id="searchGroupTable" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                    <th>编号</th>
-                    <th>组名</th>
-                    <th>创建者</th>
-                    <th>操作</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <td>搜索后显示</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  </tbody>
-
-                </table>
-              </div>
-              <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-          </div>
-
-        <div class="col-xs-12">
-          <h3>已加入的任务组</h3>
-
-        </div>
-          <!-- /.col -->
-          <div th:if="${list != null}" class="col-lg-3 col-xs-6" th:each="group : ${list}">
-              <!-- small box -->
-              <div class="small-box bg-aqua">
-
-                  <div class="inner">
-                      <h3 th:text="${group.name}"></h3>
-
-                      <p th:text="'创建者: '+ ${group.creatorName}"></p>
-
-                  </div>
-                  <div class="icon">
-                      <i class="fa fa-group"></i>
-                  </div>
-                  <a th:attr="href='./role/delete/'+ ${group.userGroupId}" class="small-box-footer" type="commit">删除<i class="fa  fa-plus-circle"></i></a>
-              </div>
-          </div>
-        </div>
-        <!-- /.row -->
-    </section>
-  </div>
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          任务
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-dashboard"></i> 任务</a></li>
+          <li><a href="#">创建任务</a></li>
+        </ol>
+      </section>
+    </div>
 
   </div>
 

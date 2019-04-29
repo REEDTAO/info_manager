@@ -21,4 +21,10 @@
     <select id="selectMyJoinUserGroup" resultType="com.reed.info_manager.entity.UserGroup">
         select * from user_group where user_group_id in (select  role.user_group_id from user_role role where user_id = #{id})
     </select>
+
+
+    <!--Integer deleteUserRoleByUserGroupId(Integer userId, Integer userGroupId);-->
+    <delete id="deleteUserRoleByUserGroupId">
+        delete from user_role where user_id=#{userId} and user_group_id=#{userGroupId}
+    </delete>
 </mapper>

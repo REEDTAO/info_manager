@@ -20,4 +20,8 @@ public class UserRoleService {
     public List<UserGroup> searchMyJoinUserGroup(Integer id) {
         return userRoleDao.searchMyJoinUserGroup(id);
     }
+
+    public Integer deleteUserRoleByUserGroupId(Integer userId, Integer userGroupId) {
+        return userRoleDao.deleteUserRoleByUserGroupId(userId,userGroupId);
+    }
 }

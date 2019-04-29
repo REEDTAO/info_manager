@@ -27,4 +27,8 @@ public class UserRoleDao {
     public List<UserGroup> searchMyJoinUserGroup(Integer id) {
         return userRoleMapper.selectMyJoinUserGroup(id);
     }
+
+    public Integer deleteUserRoleByUserGroupId(Integer userId, Integer userGroupId) {
+        return userRoleMapper.deleteUserRoleByUserGroupId(userId,userGroupId);
+    }
 }
