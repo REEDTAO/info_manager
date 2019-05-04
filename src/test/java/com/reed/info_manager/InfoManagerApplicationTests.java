@@ -4,6 +4,7 @@ package com.reed.info_manager;
 import com.github.pagehelper.PageHelper;
 import com.reed.info_manager.entity.User;
 import com.reed.info_manager.mapper.UserGroupMapper;
+import com.reed.info_manager.mapper.UserRoleMapper;
 import com.reed.info_manager.service.UserGroupService;
 import com.reed.info_manager.service.UserService;
 import org.junit.Test;
@@ -25,6 +26,8 @@ public class InfoManagerApplicationTests {
     UserService service;
     @Autowired
     UserGroupMapper mapper;
+    @Autowired
+    UserRoleMapper userRoleMapper;
 
     @Test
     public void test(){
@@ -49,6 +52,16 @@ public class InfoManagerApplicationTests {
         PageHelper.startPage(4,10);
 
         System.out.println(mapper.selectAllGroupByGroupName("美术"));
+    }
+
+    @Test
+    public void testUserRoleMapper(){
+//        ArrayList<Integer> list = new ArrayList<>();
+//        list.add(21);
+//        list.add(22);
+//        Integer num = userRoleMapper.selectUserNumByGroupName(list);
+//        System.out.println(num);
+        System.out.println(userRoleMapper.test("21,22"));
     }
 
 }

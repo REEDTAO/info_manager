@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reed.info_manager.mapper.TaskMapper">
+    <!--int insertTask(Task task);-->
+    <insert id="insertTask" useGeneratedKeys="true" keyProperty="taskId">
+        insert into task values(
+        default,
+        #{taskCreatorId},
+        #{taskCreateTime},
+        #{taskEndTime},
+        #{taskContent},
+        #{taskSubmittedNum},
+        #{taskTargetNum},
+        #{taskFilePath},
+        #{taskTitle}
+        )
+    </insert>
+</mapper>

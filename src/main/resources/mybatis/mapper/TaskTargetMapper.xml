@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reed.info_manager.mapper.TaskTargetMapper">
+
+
+    <!--void insertTaskTarget(@Param("taskId") Integer taskId, @Param("list") List<Integer> taskTargetGroupIds);-->
+    <insert id="insertTaskTarget">
+        insert into task_target values
+        <foreach collection="list" item="groupId" separator=",">
+            (default ,
+            #{taskId},
+            #{groupId}
+            )
+        </foreach>
+    </insert>
+</mapper>

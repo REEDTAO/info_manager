@@ -15,4 +15,8 @@ public interface UserRoleMapper {
     List<UserGroup> selectMyJoinUserGroup(Integer id);
 
     Integer deleteUserRoleByUserGroupId(@Param("userId") Integer userId,@Param("userGroupId") Integer userGroupId);
+
+    Integer selectUserNumByGroupName(List<Integer> taskTargetGroupIds);
+
+    Integer test(String ids);
 }

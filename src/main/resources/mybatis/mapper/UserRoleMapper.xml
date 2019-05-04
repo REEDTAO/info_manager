@@ -27,4 +27,14 @@
     <delete id="deleteUserRoleByUserGroupId">
         delete from user_role where user_id=#{userId} and user_group_id=#{userGroupId}
     </delete>
+
+    <!--Integer selectUserNumByGroupName(List<Integer> taskTargetGroupIds);-->
+    <select id="selectUserNumByGroupName" resultType="int">
+        select count(*) from user_role where user_group_id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+        #{id}
+        </foreach>
+    </select>
+
+
 </mapper>

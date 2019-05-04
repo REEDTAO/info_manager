@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class UserGroup {
-    String userGroupId;
+    Integer userGroupId;
     String name;
-    String creatorId;
+    Integer creatorId;
     String creatorName;
 
 
