@@ -8,6 +8,8 @@ import com.reed.info_manager.mapper.UserRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class TaskDao {
     @Autowired
@@ -24,5 +26,9 @@ public class TaskDao {
         if (taskMapper.insertTask(task)!=1)return 0;
         return taskTargetMapper.insertTaskTarget(task.getTaskId(),task.getTaskTargetGroupIds());
 
+    }
+
+    public List<Task> getAllUnfinishedTaskByUserId(Integer id) {
+        return  taskMapper.getAllUnfinishedTaskByUserId(id);
     }
 }

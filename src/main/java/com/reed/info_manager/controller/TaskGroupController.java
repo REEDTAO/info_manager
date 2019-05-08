@@ -53,7 +53,7 @@ public class TaskGroupController {
         User user = (User) session.getAttribute("user");
 
         if(userGroupService.addGroup(user.getId(),groupName,user.getName())==1){
-            model.addAttribute("message","添加成功！");
+            model.addAttribute("message","添加成功！请刷新后查看！");
             return "redirect:/task/group/myCreate";
         }
         return "redirect:/login";

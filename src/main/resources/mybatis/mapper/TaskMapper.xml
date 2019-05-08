@@ -17,4 +17,9 @@
         #{taskTitle}
         )
     </insert>
+
+    <!--List<Task> getAllUnfinishedTaskByUserId(Integer id);-->
+    <select id="getAllUnfinishedTaskByUserId" resultType="com.reed.info_manager.entity.Task">
+        select * from task where task_creator_id = #{id} and task_finished = '0'
+    </select>
 </mapper>

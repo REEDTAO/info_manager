@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class TaskService {
@@ -13,5 +15,9 @@ public class TaskService {
     TaskDao taskDao;
     public int addTask(Task task) {
         return taskDao.addTask(task);
+    }
+
+    public List<Task> getAllUnfinishedTaskByUserId(Integer id) {
+        return  taskDao.getAllUnfinishedTaskByUserId(id);
     }
 }

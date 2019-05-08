@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<aside class="main-sidebar" th:fragment="aside">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="/static/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p th:text="${session.user.name}"></p>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">导航栏</li>
+
+            <li >
+                <a href="/index">
+                    <i class="fa fa-th"></i> <span>首页</span>
+                    <span class="pull-right-container">
+              <small class="label pull-right bg-green"></small>
+            </span>
+                </a>
+            </li>
+            <li class="treeview" id="taskGroup">
+                <a href="">
+                    <i class="fa fa-th"></i> <span>任务组</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="myCreateGroup"><a href="/task/group/myCreate" ><i class="fa fa-circle-o"></i>我创建的任务组</a></li>
+                    <li id="myJoinGroup"><a href="/task/group/myJoin" ><i class="fa fa-circle-o"></i>我加入的任务组</a></li>
+                </ul>
+            </li>
+            <li class="treeview " id="task">
+                <a href="/task/create">
+                    <i class="fa fa-th"></i> <span>任务</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu ">
+                    <li class="treeview" id="myCreateTask">
+                        <a href=""><i class="fa fa-circle-o"></i>我的创建
+                            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+              </span>
+                        </a>
+                        <ul class="treeview-menu ">
+                            <li class="" id="createTask"><a href="/task/create"><i class="fa fa-circle-o"></i>创建任务</a></li>
+                            <li class="" id="taskCreateList"><a href=""><i class="fa fa-circle-o"></i>任务列表</a></li>
+                        </ul>
+                    </li>
+                    <li  id="receiveTaskList">
+                        <a href=""><i class="fa fa-circle-o"></i>收到的任务
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--<li class="">-->
+                <!--<a href="pages/widgets.html">-->
+                    <!--<i class="fa fa-th"></i> <span>信息统计</span>-->
+                    <!--<span class="pull-right-container">-->
+              <!--<small class="label pull-right bg-green">1</small>-->
+            <!--</span>-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li class="">-->
+                <!--<a href="pages/widgets.html">-->
+                    <!--<i class="fa fa-th"></i> <span>公告</span>-->
+                    <!--<span class="pull-right-container">-->
+              <!--<small class="label pull-right bg-green">1</small>-->
+            <!--</span>-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li class="">-->
+                <!--<a href="pages/widgets.html">-->
+                    <!--<i class="fa fa-th"></i> <span>公告</span>-->
+                    <!--<span class="pull-right-container">-->
+              <!--<small class="label pull-right bg-green">1</small>-->
+            <!--</span>-->
+                <!--</a>-->
+            <!--</li>-->
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+</body>
+</html>

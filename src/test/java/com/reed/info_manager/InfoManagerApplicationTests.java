@@ -2,9 +2,11 @@ package com.reed.info_manager;
 
 
 import com.github.pagehelper.PageHelper;
+import com.reed.info_manager.entity.Task;
 import com.reed.info_manager.entity.User;
 import com.reed.info_manager.mapper.UserGroupMapper;
 import com.reed.info_manager.mapper.UserRoleMapper;
+import com.reed.info_manager.service.TaskService;
 import com.reed.info_manager.service.UserGroupService;
 import com.reed.info_manager.service.UserService;
 import org.junit.Test;
@@ -28,6 +30,8 @@ public class InfoManagerApplicationTests {
     UserGroupMapper mapper;
     @Autowired
     UserRoleMapper userRoleMapper;
+    @Autowired
+    TaskService taskService;
 
     @Test
     public void test(){
@@ -62,6 +66,12 @@ public class InfoManagerApplicationTests {
 //        Integer num = userRoleMapper.selectUserNumByGroupName(list);
 //        System.out.println(num);
         System.out.println(userRoleMapper.test("21,22"));
+    }
+
+    @Test
+    public void testTaskMapper(){
+        List<Task> list = taskService.getAllUnfinishedTaskByUserId(3);
+        System.out.println(list);
     }
 
 }

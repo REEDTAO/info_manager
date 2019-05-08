@@ -18,6 +18,7 @@ public class Task {
     Integer taskTargetNum;
     String taskFilePath;
     String taskTitle;
+    Integer taskFinished;
     List<Integer> taskTargetGroupIds;
     List<String> taskTargetGroupList;
 

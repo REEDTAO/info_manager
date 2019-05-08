@@ -53,25 +53,25 @@ public class TaskController {
 
     @PostMapping("/create")
     public String taskCreat(@RequestParam("file") MultipartFile file, Task task, Model model){
-        if (file.isEmpty()){
-            model.addAttribute("message","文件上传失败！");
-            return  taskIndex(model);
-        }
+
         User user = (User) session.getAttribute("user");
         Calendar calendar = Calendar.getInstance();
         task.setTaskCreateTime(calendar.getTime());
+        String filePath="";
 
-        String filePath = FILE_ROOT_DIR
-                +calendar.get(Calendar.YEAR)
-                +"/"+(calendar.get(Calendar.MONTH)+1)
-                +"/"+(calendar.get(Calendar.DATE))
-                +"/"+task.getTaskTitle();
-        task.setTaskFilePath(filePath +"/"+file.getOriginalFilename());
+        if (!file.isEmpty()){
+            filePath = FILE_ROOT_DIR
+                    + calendar.get(Calendar.YEAR)
+                    + "/" + (calendar.get(Calendar.MONTH) + 1)
+                    + "/" + (calendar.get(Calendar.DATE))
+                    + "/" + task.getTaskTitle();
+            task.setTaskFilePath(filePath + "/" + file.getOriginalFilename());
+            if (!FileUtils.saveFile(file,filePath)){
+                model.addAttribute("message","文件保存失败！");
+                return  taskIndex(model);
+            }
+        }else task.setTaskFilePath("");
 
-        if (!FileUtils.saveFile(file,filePath)){
-            model.addAttribute("message","文件保存失败！");
-            return  taskIndex(model);
-        }
         task.setTaskCreatorId(user.getId());
         task.setTaskSubmittedNum(0);
         List<Integer> idList = new ArrayList<>();
@@ -80,7 +80,7 @@ public class TaskController {
             idList.add((Integer) idMap.get(name));
         }
         task.setTaskTargetGroupIds(idList);
-        System.out.println(task);
+
         if (taskService.addTask(task)>=1){
             model.addAttribute("message","发布成功！");
         }else{
@@ -88,5 +88,11 @@ public class TaskController {
         }
         return taskIndex(model);
 
+    }
+    @GetMapping("/myCreate/unfinished")
+    public String getMyCreateUnfinished(){
+        User user = (User) session.getAttribute("user");
+        List<Task> list = taskService.getAllUnfinishedTaskByUserId(user.getId());
+        return null;
     }
 }
