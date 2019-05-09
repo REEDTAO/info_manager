@@ -9,15 +9,13 @@ import com.reed.info_manager.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
+import static com.reed.info_manager.constant.Constant.FILE_PATH_IS_NULL;
 import static com.reed.info_manager.constant.Constant.FILE_ROOT_DIR;
 
 @Controller
@@ -70,7 +68,7 @@ public class TaskController {
                 model.addAttribute("message","文件保存失败！");
                 return  taskIndex(model);
             }
-        }else task.setTaskFilePath("");
+        }else task.setTaskFilePath(FILE_PATH_IS_NULL);
 
         task.setTaskCreatorId(user.getId());
         task.setTaskSubmittedNum(0);
@@ -89,10 +87,60 @@ public class TaskController {
         return taskIndex(model);
 
     }
-    @GetMapping("/myCreate/unfinished")
-    public String getMyCreateUnfinished(){
-        User user = (User) session.getAttribute("user");
-        List<Task> list = taskService.getAllUnfinishedTaskByUserId(user.getId());
-        return null;
+    @GetMapping("/myCreateTaskList")
+    public String myCreateTaskList(){
+        return "task/myCreateTaskList";
     }
+
+    @GetMapping("/myCreateTaskList/unfinished")
+    @ResponseBody
+    public Map getMyCreateUnfinished(){
+        User user = (User) session.getAttribute("user");
+        List<Task> unfinishedList = taskService.getAllUnfinishedTaskByUserId(user.getId());
+        Map<String,List> map = new HashMap();
+        map.put("data",unfinishedList);
+        return map;
+    }
+
+    @GetMapping("/myCreateTaskList/finished")
+    @ResponseBody
+    public Map getMyCreateFinished(){
+        User user = (User) session.getAttribute("user");
+        List<Task> finishedList = taskService.getAllFinishedTaskByUserId(user.getId());
+        Map<String,List> map = new HashMap();
+        map.put("data",finishedList);
+        return map;
+    }
+
+
+    @GetMapping("/myCreateTaskList/taskDetail/{taskId}")
+    public String getTaskDetail(@PathVariable("taskId") Integer taskId){
+        return "task/taskDetail";
+    }
+
+    @GetMapping("/myReceiveTaskList")
+    public String getMyReceive(){
+        return "task/myReceive";
+    }
+
+    @GetMapping("/myReceiveTaskList/unfinished")
+    @ResponseBody
+    public Map getMyReceiveTaskListUnfinished(){
+        User user = (User) session.getAttribute("user");
+        List<Task> list = taskService.getMyReceiveTaskListUnfinished(user.getId());
+        Map<String,List> map = new HashMap();
+        map.put("data",list);
+        return map;
+    }
+
+    @GetMapping("/myReceiveTaskList/finished")
+    @ResponseBody
+    public Map getMyReceiveTaskListFinished(){
+        User user = (User) session.getAttribute("user");
+        List<Task> list = taskService.getMyReceiveTaskListFinished(user.getId());
+        Map<String,List> map = new HashMap();
+        map.put("data",list);
+        return map;
+    }
+
 }

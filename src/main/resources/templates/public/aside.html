@@ -23,9 +23,9 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">导航栏</li>
 
-            <li >
+            <li id="home">
                 <a href="/index">
-                    <i class="fa fa-th"></i> <span>首页</span>
+                    <i class="fa fa-th" ></i> <span>首页</span>
                     <span class="pull-right-container">
               <small class="label pull-right bg-green"></small>
             </span>
@@ -59,11 +59,11 @@
                         </a>
                         <ul class="treeview-menu ">
                             <li class="" id="createTask"><a href="/task/create"><i class="fa fa-circle-o"></i>创建任务</a></li>
-                            <li class="" id="taskCreateList"><a href=""><i class="fa fa-circle-o"></i>任务列表</a></li>
+                            <li class="" id="myCreateTaskList"><a href="/task/myCreateTaskList"><i class="fa fa-circle-o"></i>任务列表</a></li>
                         </ul>
                     </li>
                     <li  id="receiveTaskList">
-                        <a href=""><i class="fa fa-circle-o"></i>收到的任务
+                        <a href="/task/myReceiveTaskList" ><i class="fa fa-circle-o"></i>收到的任务
                         </a>
                     </li>
                 </ul>

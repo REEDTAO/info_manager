@@ -10,4 +10,6 @@ import java.util.List;
 public interface TaskTargetMapper {
 
     Integer insertTaskTarget(@Param("taskId") Integer taskId, @Param("list") List<Integer> taskTargetGroupIds);
+
+    List<String> getTargetGroupList(Integer taskId);
 }

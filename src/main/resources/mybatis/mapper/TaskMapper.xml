@@ -14,12 +14,36 @@
         #{taskSubmittedNum},
         #{taskTargetNum},
         #{taskFilePath},
-        #{taskTitle}
+        #{taskTitle},
+        default
         )
     </insert>
 
     <!--List<Task> getAllUnfinishedTaskByUserId(Integer id);-->
     <select id="getAllUnfinishedTaskByUserId" resultType="com.reed.info_manager.entity.Task">
         select * from task where task_creator_id = #{id} and task_finished = '0'
+    </select>
+
+    <!--List<Task> getAllFinishedTaskByUserId(Integer id);-->
+    <select id="getAllFinishedTaskByUserId" resultType="com.reed.info_manager.entity.Task">
+        select * from task where task_creator_id = #{id} and task_finished = '1'
+    </select>
+
+    <!--List<Task> getMyReceiveTaskListUnfinished(Integer id);-->
+    <select id="getMyReceiveTaskListUnfinished" resultType="com.reed.info_manager.entity.Task">
+        select * from task where task_id in (
+            select task_id from task_target where task_target_group_id in(
+              select user_group_id from user_role where user_id = #{id}
+            )
+        ) and task_finished = '0'
+    </select>
+
+    <!--List<Task> getMyReceiveTaskListFinished(Integer id);-->
+    <select id="getMyReceiveTaskListFinished" resultType="com.reed.info_manager.entity.Task">
+        select * from task where task_id in (
+            select task_id from task_target where task_target_group_id in(
+              select user_group_id from user_role where user_id = #{id}
+            )
+        ) and task_finished = '1'
     </select>
 </mapper>

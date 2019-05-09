@@ -1,9 +1,11 @@
 package com.reed.info_manager.dao;
 
 import com.reed.info_manager.entity.Task;
+import com.reed.info_manager.entity.UserGroup;
 import com.reed.info_manager.mapper.TaskMapper;
 
 import com.reed.info_manager.mapper.TaskTargetMapper;
+import com.reed.info_manager.mapper.UserGroupMapper;
 import com.reed.info_manager.mapper.UserRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,8 @@ public class TaskDao {
     UserRoleMapper userRoleMapper;
     @Autowired
     TaskTargetMapper taskTargetMapper;
+    @Autowired
+    UserGroupMapper userGroupMapper;
 
 
     public int addTask(Task task) {
@@ -29,6 +33,31 @@ public class TaskDao {
     }
 
     public List<Task> getAllUnfinishedTaskByUserId(Integer id) {
-        return  taskMapper.getAllUnfinishedTaskByUserId(id);
+        List<Task> taskList = taskMapper.getAllUnfinishedTaskByUserId(id);
+        if(taskList!=null){
+            for (Task task: taskList) {
+                task.setTaskTargetGroupList(taskTargetMapper.getTargetGroupList(task.getTaskId()));
+            }
+        }
+
+        return  taskList;
+    }
+
+    public List<Task> getAllFinishedTaskByUserId(Integer id) {
+        List<Task> taskList = taskMapper.getAllFinishedTaskByUserId(id);
+        if(taskList!=null){
+            for (Task task: taskList) {
+                task.setTaskTargetGroupList(taskTargetMapper.getTargetGroupList(task.getTaskId()));
+            }
+        }
+        return  taskMapper.getAllFinishedTaskByUserId(id);
+    }
+
+    public List<Task> getMyReceiveTaskListUnfinished(Integer id) {
+        return taskMapper.getMyReceiveTaskListUnfinished(id);
+    }
+
+    public List<Task> getMyReceiveTaskListFinished(Integer id) {
+        return taskMapper.getMyReceiveTaskListFinished(id);
     }
 }

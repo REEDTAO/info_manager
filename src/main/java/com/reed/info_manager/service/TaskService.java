@@ -20,4 +20,16 @@ public class TaskService {
     public List<Task> getAllUnfinishedTaskByUserId(Integer id) {
         return  taskDao.getAllUnfinishedTaskByUserId(id);
     }
+
+    public List<Task> getAllFinishedTaskByUserId(Integer id) {
+        return  taskDao.getAllFinishedTaskByUserId(id);
+    }
+
+    public List<Task> getMyReceiveTaskListUnfinished(Integer id) {
+        return taskDao.getMyReceiveTaskListUnfinished(id);
+    }
+
+    public List<Task> getMyReceiveTaskListFinished(Integer id) {
+        return  taskDao.getMyReceiveTaskListFinished(id);
+    }
 }

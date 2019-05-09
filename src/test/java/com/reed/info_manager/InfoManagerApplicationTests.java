@@ -70,7 +70,8 @@ public class InfoManagerApplicationTests {
 
     @Test
     public void testTaskMapper(){
-        List<Task> list = taskService.getAllUnfinishedTaskByUserId(3);
+        List<Task> list = taskService.getMyReceiveTaskListUnfinished(3);
+
         System.out.println(list);
     }
 

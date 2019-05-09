@@ -15,4 +15,9 @@
             )
         </foreach>
     </insert>
+
+    <!--List<String> getTargetGroupList(Integer taskId);-->
+    <select id="getTargetGroupList" resultType="string">
+        select name from user_group where user_group_id in (select task_target_group_id from task_target where task_id=#{taskId})
+    </select>
 </mapper>
