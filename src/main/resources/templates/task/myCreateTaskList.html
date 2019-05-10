@@ -38,6 +38,11 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        td a{
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -240,7 +245,10 @@
                     }  },
                 //操作
                 { "data": function (data,type,row) {
-                        return   '<a href="./myCreateTaskList/taskdetial/'+data.taskId+'" >查看详情</a>'
+                        return   '<a href="./myCreateTaskList/taskdetial/'+data.taskId+'" >查看详情</a>'+
+                            '<a href="./myCreateTaskList/taskdetial/'+data.taskId+'" >修改</a>'+
+                            '<a href="./myCreateTaskList/taskdetial/'+data.taskId+'" >删除</a>'+
+                            '<a href="./myCreateTaskList/taskdetial/'+data.taskId+'" >直接完成</a>';
                     } }
             ]
         });

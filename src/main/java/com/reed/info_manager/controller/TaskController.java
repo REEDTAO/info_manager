@@ -82,7 +82,6 @@ public class TaskController {
             idList.add((Integer) idMap.get(name));
         }
         task.setTaskTargetGroupIds(idList);
-
         if (taskService.addTask(task)>=1){
             model.addAttribute("message","发布成功！");
         }else{
@@ -142,6 +141,8 @@ public class TaskController {
         Task task = taskService.getTaskByTaskId(taskId);
         String creatorName = userService.getUserNameByUserId(task.getTaskCreatorId());
         model.addAttribute("creatorName",creatorName);
+        String taskFilePath = task.getTaskFilePath();
+        task.setTaskFilePath(taskFilePath.substring(FILE_ROOT_DIR.length(),taskFilePath.lastIndexOf("/")));
         model.addAttribute("task",task);
         return  "task/myReceiveUnifinishedDetail";
     }

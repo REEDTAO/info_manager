@@ -20,4 +20,14 @@
          #{taskResponderId}
         )
     </insert>
+    <!--TaskReply getTaskReplyByTaskId(@Param("taskId") String taskId, @Param("taskResponderId") Integer id);-->
+    <select id="getTaskReplyByTaskId" resultType="com.reed.info_manager.entity.TaskReply">
+        select  * from task_reply where task_id = #{taskId} and task_responder_id = #{taskResponderId}
+    </select>
+
+    <!--int updateTaskReply(TaskReply taskReply);-->
+    <update id="updateTaskReply">
+        update task_reply set task_reply_content = #{taskReplyContent},task_reply_file_path = #{taskReplyFilePath}
+        where task_id = #{taskId} and task_responder_id=#{taskResponderId}
+    </update>
 </mapper>

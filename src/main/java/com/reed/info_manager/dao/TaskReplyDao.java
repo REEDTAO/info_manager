@@ -13,4 +13,12 @@ public class TaskReplyDao {
     public int addReply(TaskReply taskReply) {
         return  taskReplyMapper.insertReply(taskReply);
     }
+
+    public TaskReply getTaskReplyByTaskId(String taskId, Integer id) {
+        return taskReplyMapper.getTaskReplyByTaskId(taskId,id);
+    }
+
+    public int updateTaskReply(TaskReply taskReply) {
+        return taskReplyMapper.updateTaskReply(taskReply);
+    }
 }

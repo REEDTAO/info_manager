@@ -31,12 +31,21 @@ public class FileUtils {
         }
         return true;
     }
+    public static boolean saveFileFullPath(MultipartFile file,String fullPath,String userName) {
+        File temp = new File(fullPath);
+        String[] list = temp.getParentFile().list();
+        for (int i=0;i<list.length;i++){
+            if(list[i].startsWith(userName)){
+                new File(temp.getParent()+"/"+list[i]).delete();
+                break;
+            }
+        }
+        return  saveFileFullPath(file,fullPath);
+    }
 
 
 
     public static void fileDownload(String filePath, HttpServletResponse response){
-            //设置文件路径
-            String realPath = "D:\\eclipsworksapce1\\upgrade\\src\\main\\webapp\\upload\\tbox\\456789\\";
             File file = new File(FILE_ROOT_DIR + "/" + filePath);
             if (file.exists()) {
                 response.setContentType("application/octet-stream");//

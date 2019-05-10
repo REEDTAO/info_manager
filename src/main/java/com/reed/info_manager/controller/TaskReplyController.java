@@ -7,10 +7,7 @@ import com.reed.info_manager.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -30,29 +27,60 @@ public class TaskReplyController {
     TaskReplyService taskReplyService;
 
     @PostMapping
-    @ResponseBody
-    public void myReply(@RequestParam("file") MultipartFile file , TaskReply taskReply, Model model){
+    public String  myReply(@RequestParam("file") MultipartFile file , TaskReply taskReply, Model model){
         User user = (User)session.getAttribute("user");
-        if (!file.isEmpty()) {
-            taskReply.setTaskReplyFilePath(parseFilePath(taskReply.getTaskReplyFilePath(),user.getName(),file.getOriginalFilename()));
+        handleUpload(file,taskReply,model,user);
 
-            if (!FileUtils.saveFileFullPath(file, taskReply.getTaskReplyFilePath())) {
-                model.addAttribute("message", "文件保存失败！");
-            }
-        }else taskReply.setTaskReplyFilePath(FILE_PATH_IS_NULL);
-        taskReply.setTaskReplyTime(new Date());
-        taskReply.setTaskResponderId(user.getId());
 
         if(taskReplyService.addReply(taskReply)==1){
             model.addAttribute("message","回复成功！");
         }else{
             model.addAttribute("message","回复失败！");
         }
-
+        taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath().substring(0,taskReply.getTaskReplyFilePath().lastIndexOf("/")));
+        model.addAttribute("taskReply",taskReply);
+        return "task/myReceiveFinishedDetail";
+    }
+    @PostMapping("/update")
+    public String myReplyUpdate(@RequestParam("file") MultipartFile file , TaskReply taskReply, Model model){
+        User user = (User)session.getAttribute("user");
+        handleUpload(file,taskReply,model,user);
+        if(taskReplyService.updateTaskReply(taskReply)==1){
+            model.addAttribute("message","修改成功！");
+        }else{
+            model.addAttribute("message","修改失败！请联系管理员！");
+        }
+        taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath().substring(0,taskReply.getTaskReplyFilePath().lastIndexOf("/")));
+        model.addAttribute("taskReply",taskReply);
+        return "task/myReceiveFinishedDetail";
     }
 
-    public static String parseFilePath(String path,String userName,String fileName){
-        File file = new File(path);
-        return file.getParent()+"/"+userName+"-"+fileName;
+
+    @GetMapping("/finished/{taskId}")
+    public String getMyFinishedReply(@PathVariable("taskId") String taskId,Model model){
+        User user = (User)session.getAttribute("user");
+        TaskReply reply = taskReplyService.getTaskReplyByTaskId(taskId,user.getId());
+        String taskReplyFilePath = reply.getTaskReplyFilePath();
+        reply.setTaskReplyFilePath(taskReplyFilePath.substring(0,taskReplyFilePath.lastIndexOf("/")));
+        model.addAttribute("taskReply",reply);
+        return "task/myReceiveFinishedDetail";
+    }
+
+
+
+
+
+    public static void handleUpload(MultipartFile file , TaskReply taskReply, Model model,User user){
+        if (!file.isEmpty()) {
+            taskReply.setTaskReplyFilePath(FILE_ROOT_DIR+taskReply.getTaskReplyFilePath()+"/"+user.getName()+"-"+file.getOriginalFilename());
+            System.out.println(taskReply.getTaskReplyFilePath());
+            if (!FileUtils.saveFileFullPath(file, taskReply.getTaskReplyFilePath(),user.getName())) {
+                model.addAttribute("message", "文件保存失败！");
+            }
+            taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath().substring(FILE_ROOT_DIR.length()));
+        }else taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath()+"/"+FILE_PATH_IS_NULL);
+        taskReply.setTaskReplyTime(new Date());
+        taskReply.setTaskResponderId(user.getId());
+        System.out.println(taskReply.getTaskReplyFilePath());
     }
 }

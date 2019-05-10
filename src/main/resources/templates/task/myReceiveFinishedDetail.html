@@ -58,7 +58,7 @@
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i>任务</a></li>
                 <li><a href="#">收到的任务</a></li>
-                <li><a href="#">任务详情</a></li>
+                <li><a href="#">任务回复详情</a></li>
             </ol>
         </section>
         <!-- Main content -->
@@ -67,21 +67,19 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header" >
-                        <span th:text="${task.taskTitle}"></span>
-                        <small class="pull-right" th:text="|截止日期：|+${#dates.format(task.taskEndTime,'yyyy-MM-dd')}"></small>
+                        <span >回复修改</span>
+                        <small class="pull-right" th:text="|回复日期：|+${#dates.format(taskReply.taskReplyTime,'yyyy-MM-dd')}"></small>
                     </h2>
-                    <h4>任务内容：</h4>
-                    <p th:text="${task.taskContent}" class="text-center"></p>
+                    <h4>内容：</h4>
+                    <p th:text="${taskReply.taskReplyContent}" class="text-center"></p>
                     <hr>
-                    下载：<a href="">任务附件</a>
-                    <div class="pull-right" th:text="|创建者：|+${creatorName}"></div>
+                    下载：<a href="" >任务附件</a>
                     <hr>
-
                 </div>
                 <div class="col-xs-12">
                 <h4>任务提交：</h4>
                 <div class="box-body pad">
-                    <form action="/task/reply" method="post" enctype="multipart/form-data">
+                    <form action="/task/reply/update" method="post" enctype="multipart/form-data">
                             <textarea class="textarea" placeholder="回复内容" name="taskReplyContent"
                           style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
 
@@ -89,10 +87,16 @@
                             <label for="exampleInputFile">附件：</label>
                             <input name="file" type="file" id="exampleInputFile">
                         </div>
-                        <input hidden th:value="${task.taskFilePath}" name="taskReplyFilePath"/>
-                        <input hidden th:value="${task.taskId}" name="taskId"/>
+                        <!--Integer taskReplyId;-->
+                        <!--String taskReplyContent;-->
+                        <!--String taskReplyFilePath;-->
+                        <!--Integer taskResponderId;-->
+                        <!--Integer taskId;-->
+                        <!--Date taskReplyTime;-->
+                        <input hidden th:value="${taskReply.taskReplyFilePath}" name="taskReplyFilePath"/>
+                        <input hidden th:value="${taskReply.taskId}" name="taskId"/>
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary pull-right">提交</button>
+                            <button type="submit" class="btn btn-primary pull-right">重新提交</button>
                         </div>
                     </form>
                 </div>
