@@ -3,8 +3,10 @@ package com.reed.info_manager.controller;
 import com.reed.info_manager.entity.Task;
 import com.reed.info_manager.entity.User;
 import com.reed.info_manager.entity.UserGroup;
+import com.reed.info_manager.mapper.UserMapper;
 import com.reed.info_manager.service.TaskService;
 import com.reed.info_manager.service.UserGroupService;
+import com.reed.info_manager.service.UserService;
 import com.reed.info_manager.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,8 @@ public class TaskController {
     TaskService taskService;
     @Autowired
     UserGroupService userGroupService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/create")
     public String taskIndex(Model model){
@@ -131,6 +135,15 @@ public class TaskController {
         Map<String,List> map = new HashMap();
         map.put("data",list);
         return map;
+    }
+    @GetMapping("/myReceiveTaskList/unfinish/taskDetail/{taskId}")
+    public String getMyReceiveTaskUnfinishedTaskDetail(@PathVariable("taskId") Integer taskId,Model model){
+        User user  = (User) session.getAttribute("user");
+        Task task = taskService.getTaskByTaskId(taskId);
+        String creatorName = userService.getUserNameByUserId(task.getTaskCreatorId());
+        model.addAttribute("creatorName",creatorName);
+        model.addAttribute("task",task);
+        return  "task/myReceiveUnifinishedDetail";
     }
 
     @GetMapping("/myReceiveTaskList/finished")

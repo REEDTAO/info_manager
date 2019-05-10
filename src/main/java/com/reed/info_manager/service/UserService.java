@@ -13,6 +13,11 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserDao userDao;
+
+    public  String getUserNameByUserId(Integer taskCreatorId) {
+        return userDao.getUserNameByUserId(taskCreatorId);
+    }
+
     public User login(String id,String password) {
         return userDao.login(id,password);
     }

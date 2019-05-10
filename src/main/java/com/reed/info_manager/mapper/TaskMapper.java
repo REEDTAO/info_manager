@@ -16,4 +16,6 @@ public interface TaskMapper {
     List<Task> getMyReceiveTaskListUnfinished(Integer id);
 
     List<Task> getMyReceiveTaskListFinished(Integer id);
+
+    Task getTaskByTaskId(Integer taskId);
 }

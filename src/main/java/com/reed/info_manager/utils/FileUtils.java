@@ -21,6 +21,18 @@ public class FileUtils {
         }
         return true;
     }
+    public static boolean saveFileFullPath(MultipartFile file,String fullPath){
+        File dest = new File(fullPath);
+        try {
+            file.transferTo(dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
 
     public static void fileDownload(String filePath, HttpServletResponse response){
             //设置文件路径

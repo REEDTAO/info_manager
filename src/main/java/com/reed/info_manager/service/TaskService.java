@@ -32,4 +32,8 @@ public class TaskService {
     public List<Task> getMyReceiveTaskListFinished(Integer id) {
         return  taskDao.getMyReceiveTaskListFinished(id);
     }
+
+    public Task getTaskByTaskId(Integer taskId) {
+        return  taskDao.getTaskByTaskId(taskId);
+    }
 }

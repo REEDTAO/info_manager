@@ -60,4 +60,8 @@ public class TaskDao {
     public List<Task> getMyReceiveTaskListFinished(Integer id) {
         return taskMapper.getMyReceiveTaskListFinished(id);
     }
+
+    public Task getTaskByTaskId(Integer taskId) {
+        return  taskMapper.getTaskByTaskId(taskId);
+    }
 }

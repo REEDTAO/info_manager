@@ -18,4 +18,8 @@ public class UserDao {
     public int addUsers(List<User> list) {
         return userMapper.addUsers(list);
     }
+
+    public String getUserNameByUserId(Integer taskCreatorId) {
+        return  userMapper.getUserNameByUserId(taskCreatorId);
+    }
 }

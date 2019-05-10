@@ -35,15 +35,16 @@
             select task_id from task_target where task_target_group_id in(
               select user_group_id from user_role where user_id = #{id}
             )
-        ) and task_finished = '0'
+        ) and task_id not in (select task_id from task_reply where task_responder_id = #{id})
     </select>
 
     <!--List<Task> getMyReceiveTaskListFinished(Integer id);-->
     <select id="getMyReceiveTaskListFinished" resultType="com.reed.info_manager.entity.Task">
-        select * from task where task_id in (
-            select task_id from task_target where task_target_group_id in(
-              select user_group_id from user_role where user_id = #{id}
-            )
-        ) and task_finished = '1'
+         select * from task where task_id in (select task_id from task_reply where task_responder_id = #{id})
+    </select>
+
+    <!--Task getTaskByTaskId(Integer taskId);-->
+    <select id="getTaskByTaskId" resultType="com.reed.info_manager.entity.Task">
+        select * from task where task_id = #{taskId}
     </select>
 </mapper>

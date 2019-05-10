@@ -8,6 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
+     String getUserNameByUserId(Integer taskCreatorId) ;
+
     User selectUserByIdAndPassword(@Param("id") String id, @Param("password") String password);
 
     int addUsers(List<User> list);
