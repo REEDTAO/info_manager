@@ -36,4 +36,16 @@ public class TaskService {
     public Task getTaskByTaskId(Integer taskId) {
         return  taskDao.getTaskByTaskId(taskId);
     }
+
+    public int deleteTaskByTaskId(Integer taskId) {
+        return taskDao.deleteTaskByTaskId(taskId);
+    }
+
+    public int updateTaskByTaskId(Task task) {
+        return taskDao.updateTaskByTaskId(task);
+    }
+
+    public int finishTask(Integer taskId) {
+        return taskDao.finishTask(taskId);
+    }
 }

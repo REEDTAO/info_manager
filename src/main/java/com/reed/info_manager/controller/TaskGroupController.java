@@ -125,4 +125,42 @@ public class TaskGroupController {
         return "redirect:/task/group/myJoin";
 
     }
+
+
+//        <tr th:each="user : #{userList}">
+//            <td th:text="${user.id}"></td>
+//            <td th:text="${user.name}"></td>
+//            <td><a href="/task/group/forceDeleteMember/${taskGroupId}/${user.id}">强制退组</a></td>
+//        </tr>
+//    </tbody>
+
+    @GetMapping("/taskGroupMember/{userGroupId}")
+    public String getTaskGroupMember(@PathVariable("userGroupId")Integer userGroupId,Model model){
+//        List<User> userList = userRoleService.getUserByUserGroupId(userGroupId);
+//        if (userList!=null){
+//            model.addAttribute("userList",userList);
+//            model.addAttribute("userGroupId",userGroupId);
+//        }
+        model.addAttribute("userGroupId",userGroupId);
+        return "taskGroup/taskGroupMember";
+    }
+    @GetMapping("/taskGroupMember/getMember/{userGroupId}")
+    @ResponseBody
+    public Map getMember(@PathVariable("userGroupId")Integer userGroupId,Model model){
+        List<User> userList = userRoleService.getUserByUserGroupId(userGroupId);
+        if (userList!=null){
+            model.addAttribute("userList",userList);
+            model.addAttribute("userGroupId",userGroupId);
+        }
+        Map<String,List> map = new HashMap<>();
+        map.put("data",userList);
+        return map;
+    }
+    @GetMapping("/forceDeleteMember/{userGroupId}/{userId}")
+    public String forceDeleteMember(@PathVariable("userGroupId")Integer userGroupId,@PathVariable("userId")Integer userId, Model model){
+        if (userRoleService.deleteUserRoleByUserGroupIdAndUserId(userGroupId,userId)==1){
+            model.addAttribute("message","操作成功");
+        }
+        return getTaskGroupMember(userGroupId,model);
+    }
 }

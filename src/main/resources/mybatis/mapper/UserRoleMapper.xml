@@ -36,5 +36,14 @@
         </foreach>
     </select>
 
+    <!--List<User> getUserByUserGroupId(Integer userGroupId);-->
+    <select id="getUserByUserGroupId" resultType="com.reed.info_manager.entity.User">
+        select * from user where id in(
+        select user_id from user_role where user_group_id = #{userGroupId})
+    </select>
 
+    <!--int deleteUserRoleByUserGroupIdAndUserId(@Param("userGroupId") Integer userGroupId,@Param("userId") Integer userId);-->
+    <delete id="deleteUserRoleByUserGroupIdAndUserId">
+        delete from user_role where user_group_id=#{userGroupId} and user_id = #{userId}
+    </delete>
 </mapper>

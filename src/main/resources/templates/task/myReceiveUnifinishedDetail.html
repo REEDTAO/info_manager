@@ -73,7 +73,7 @@
                     <h4>任务内容：</h4>
                     <p th:text="${task.taskContent}" class="text-center"></p>
                     <hr>
-                    下载：<a href="">任务附件</a>
+                    下载：<a th:href="|/fileManager/download?filePath=|+${task.taskFilePath}">任务附件</a>
                     <div class="pull-right" th:text="|创建者：|+${creatorName}"></div>
                     <hr>
 

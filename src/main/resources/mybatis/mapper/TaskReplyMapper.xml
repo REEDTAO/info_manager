@@ -30,4 +30,9 @@
         update task_reply set task_reply_content = #{taskReplyContent},task_reply_file_path = #{taskReplyFilePath}
         where task_id = #{taskId} and task_responder_id=#{taskResponderId}
     </update>
+
+    <!--List<TaskReply> getTaskReplyListByTaskId(Integer taskId);-->
+    <select id="getTaskReplyListByTaskId" resultType="com.reed.info_manager.entity.TaskReply">
+        select * from task_reply where task_id = #{taskId}
+    </select>
 </mapper>

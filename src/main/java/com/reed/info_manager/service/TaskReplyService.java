@@ -5,6 +5,8 @@ import com.reed.info_manager.entity.TaskReply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 
 public class TaskReplyService {
@@ -20,5 +22,9 @@ public class TaskReplyService {
 
     public int updateTaskReply(TaskReply taskReply) {
         return taskReplyDao.updateTaskReply(taskReply);
+    }
+
+    public List<TaskReply> getTaskReplyListByTaskId(Integer taskId) {
+        return taskReplyDao.getTaskReplyListByTaskId(taskId);
     }
 }

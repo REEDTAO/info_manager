@@ -90,7 +90,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
 
-            <div class="inner">
+            <div class="inner" th:onclick="|memberDetail('/task/group/taskGroupMember/|+${group.userGroupId}+|')|">
               <h3 th:text="${group.name}"></h3>
 
               <p th:text="'创建者: '+ ${session.user.name}"></p>
@@ -162,8 +162,8 @@
 <script src="/static/dist/js/demo.js"></script>
 
 <script>
-  function  addGroup() {
-    location.href="./add/"+$("input").val();
+  function memberDetail(url){
+    window.location.href=url;
   }
   $("#taskGroup").addClass("active")
   $("#myCreateGroup").addClass("active")

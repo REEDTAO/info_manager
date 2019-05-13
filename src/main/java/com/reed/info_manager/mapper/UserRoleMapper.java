@@ -1,5 +1,6 @@
 package com.reed.info_manager.mapper;
 
+import com.reed.info_manager.entity.User;
 import com.reed.info_manager.entity.UserGroup;
 import com.reed.info_manager.entity.UserRole;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,4 +20,8 @@ public interface UserRoleMapper {
     Integer selectUserNumByGroupName(List<Integer> taskTargetGroupIds);
 
     Integer test(String ids);
+
+    List<User> getUserByUserGroupId(Integer userGroupId);
+
+    int deleteUserRoleByUserGroupIdAndUserId(@Param("userGroupId") Integer userGroupId,@Param("userId") Integer userId);
 }

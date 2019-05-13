@@ -9,6 +9,7 @@ import com.reed.info_manager.mapper.UserRoleMapper;
 import com.reed.info_manager.service.TaskService;
 import com.reed.info_manager.service.UserGroupService;
 import com.reed.info_manager.service.UserService;
+import com.reed.info_manager.utils.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -73,6 +74,11 @@ public class InfoManagerApplicationTests {
         List<Task> list = taskService.getMyReceiveTaskListUnfinished(3);
 
         System.out.println(list);
+    }
+
+    @Test
+    public void testFilePack(){
+        FileUtils.packFile("2019/5/9/admin第一次提交");
     }
 
 }

@@ -3,11 +3,11 @@ package com.reed.info_manager.controller;
 import com.reed.info_manager.entity.Task;
 import com.reed.info_manager.entity.User;
 import com.reed.info_manager.entity.UserGroup;
-import com.reed.info_manager.mapper.UserMapper;
 import com.reed.info_manager.service.TaskService;
 import com.reed.info_manager.service.UserGroupService;
 import com.reed.info_manager.service.UserService;
 import com.reed.info_manager.utils.FileUtils;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
-import static com.reed.info_manager.constant.Constant.FILE_PATH_IS_NULL;
 import static com.reed.info_manager.constant.Constant.FILE_ROOT_DIR;
 
 @Controller
@@ -51,28 +50,44 @@ public class TaskController {
         return "task/taskCreate";
     }
 
+    @GetMapping("/complete/{taskId}")
+    public String completeTask(@PathVariable("taskId")Integer taskId, Model model){
+        if(taskService.finishTask(taskId)==1){
+            model.addAttribute("message","任务直接完成！");
+        }else model.addAttribute("message","操作失败，请联系管理员！");
+        return "redirect:/task/myCreateTaskList";
+    }
 
 
-    @PostMapping("/create")
-    public String taskCreat(@RequestParam("file") MultipartFile file, Task task, Model model){
+    @PostMapping("/update")
+    public String update(@RequestParam("file") MultipartFile file, Task task, Model model){
+        FileUtils.deleteFileByFullPath(FILE_ROOT_DIR+task.getOldPath());
 
+        handleData(session,task,file,model);
+
+        System.out.println(task);
+
+        if(taskService.updateTaskByTaskId(task)==1){
+            model.addAttribute("message","修改成功！");
+        }else model.addAttribute("message","修改失败，请联系管理员！");
+        return myCreateTaskList();
+    }
+
+    public static void handleData(HttpSession session,Task task,MultipartFile file,Model model){
         User user = (User) session.getAttribute("user");
         Calendar calendar = Calendar.getInstance();
         task.setTaskCreateTime(calendar.getTime());
-        String filePath="";
-
+        String filePath = calendar.get(Calendar.YEAR)
+                + "/" + (calendar.get(Calendar.MONTH) + 1)
+                + "/" + (calendar.get(Calendar.DATE))
+                + "/" + task.getTaskTitle()+"/";
         if (!file.isEmpty()){
-            filePath = FILE_ROOT_DIR
-                    + calendar.get(Calendar.YEAR)
-                    + "/" + (calendar.get(Calendar.MONTH) + 1)
-                    + "/" + (calendar.get(Calendar.DATE))
-                    + "/" + task.getTaskTitle();
-            task.setTaskFilePath(filePath + "/" + file.getOriginalFilename());
-            if (!FileUtils.saveFile(file,filePath)){
+            if (!FileUtils.saveFile(file,FILE_ROOT_DIR+filePath)){
                 model.addAttribute("message","文件保存失败！");
-                return  taskIndex(model);
+                //return  taskIndex(model);
             }
-        }else task.setTaskFilePath(FILE_PATH_IS_NULL);
+            task.setTaskFilePath(filePath + file.getOriginalFilename());
+        }else task.setTaskFilePath(filePath);
 
         task.setTaskCreatorId(user.getId());
         task.setTaskSubmittedNum(0);
@@ -82,6 +97,13 @@ public class TaskController {
             idList.add((Integer) idMap.get(name));
         }
         task.setTaskTargetGroupIds(idList);
+    }
+
+    @PostMapping("/create")
+    public String taskCreat(@RequestParam("file") MultipartFile file, Task task, Model model){
+
+        handleData(session,task,file,model);
+
         if (taskService.addTask(task)>=1){
             model.addAttribute("message","发布成功！");
         }else{
@@ -141,8 +163,6 @@ public class TaskController {
         Task task = taskService.getTaskByTaskId(taskId);
         String creatorName = userService.getUserNameByUserId(task.getTaskCreatorId());
         model.addAttribute("creatorName",creatorName);
-        String taskFilePath = task.getTaskFilePath();
-        task.setTaskFilePath(taskFilePath.substring(FILE_ROOT_DIR.length(),taskFilePath.lastIndexOf("/")));
         model.addAttribute("task",task);
         return  "task/myReceiveUnifinishedDetail";
     }
@@ -156,5 +176,14 @@ public class TaskController {
         map.put("data",list);
         return map;
     }
+    @GetMapping("/updateTask/{taskId}")
+    public String getUpdateTaskPage(@PathVariable("taskId")Integer taskId,Model model){
+        Task task = taskService.getTaskByTaskId(taskId);
+        model.addAttribute("task",task);
+        taskIndex(model);
+        return "task/taskUpdate";
+    }
+
+
 
 }

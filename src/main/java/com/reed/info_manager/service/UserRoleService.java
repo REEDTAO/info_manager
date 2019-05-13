@@ -2,6 +2,7 @@ package com.reed.info_manager.service;
 
 
 import com.reed.info_manager.dao.UserRoleDao;
+import com.reed.info_manager.entity.User;
 import com.reed.info_manager.entity.UserGroup;
 import com.reed.info_manager.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,13 @@ public class UserRoleService {
 
     public Integer deleteUserRoleByUserGroupId(Integer userId, Integer userGroupId) {
         return userRoleDao.deleteUserRoleByUserGroupId(userId,userGroupId);
+    }
+
+    public List<User> getUserByUserGroupId(Integer userGroupId) {
+        return userRoleDao.getUserByUserGroupId(userGroupId);
+    }
+
+    public int deleteUserRoleByUserGroupIdAndUserId(Integer userGroupId, Integer userId) {
+        return userRoleDao.deleteUserRoleByUserGroupIdAndUserId(userGroupId,userId);
     }
 }

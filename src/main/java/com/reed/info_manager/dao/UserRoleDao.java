@@ -1,6 +1,7 @@
 package com.reed.info_manager.dao;
 
 
+import com.reed.info_manager.entity.User;
 import com.reed.info_manager.entity.UserGroup;
 import com.reed.info_manager.entity.UserRole;
 import com.reed.info_manager.mapper.UserRoleMapper;
@@ -30,5 +31,14 @@ public class UserRoleDao {
 
     public Integer deleteUserRoleByUserGroupId(Integer userId, Integer userGroupId) {
         return userRoleMapper.deleteUserRoleByUserGroupId(userId,userGroupId);
+    }
+
+    public List<User> getUserByUserGroupId(Integer userGroupId) {
+
+        return userRoleMapper.getUserByUserGroupId(userGroupId);
+    }
+
+    public int deleteUserRoleByUserGroupIdAndUserId(Integer userGroupId, Integer userId) {
+        return  userRoleMapper.deleteUserRoleByUserGroupIdAndUserId(userGroupId,userId);
     }
 }

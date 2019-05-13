@@ -68,51 +68,24 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="box box-default ">
-                            <div class="nav-tabs-custom">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#unfinished" data-toggle="tab">未完成</a></li>
-                                    <li onclick="getAllFinishedTask()"><a  href="#finished" data-toggle="tab">已完成</a></li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="active tab-pane" id="unfinished">
-                                        <div class="box-body">
-                                            <table id="unfinishedTable" class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th>任务编号</th>
-                                                    <th>任务标题</th>
-                                                    <th>任务内容</th>
-                                                    <th>任务对象</th>
-                                                    <th>任务提交进度</th>
-                                                    <th>任务截止时间</th>
-                                                    <th>操作</th>
-                                                </tr>
-                                                </thead>
+                            <table id="taskGroupMember" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>成员编号</th>
+                                    <th>成员姓名</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
 
+                                    <!--<tr th:if="${userList!=null}" th:each="user : ${userList}">-->
+                                        <!--<td th:text="${user.id}"></td>-->
+                                        <!--<td th:text="${user.name}"></td>-->
+                                        <!--<td><a href="/task/group/forceDeleteMember/${userGroupId}/${user.id}">强制退组</a></td>-->
+                                    <!--</tr>-->
+                                </tbody>
 
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane" id="finished">
-                                        <div class="box-body">
-                                            <table id="finishedTable" class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th>任务编号</th>
-                                                    <th>任务标题</th>
-                                                    <th>任务内容</th>
-                                                    <th>任务对象</th>
-                                                    <th>任务提交进度</th>
-                                                    <th>任务截止时间</th>
-                                                    <th>操作</th>
-                                                </tr>
-                                                </thead>
-
-
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                            </table>
                             <!-- /.box-body -->
                         </div>
                         <!-- /.box -->
@@ -171,14 +144,14 @@
 <script src="/static/bower_components/fastclick/lib/fastclick.js"></script>
 
 
-<script>
+<script th:inline="javascript">
     $("#myCreateTaskList").addClass("active")
     $("#myCreateTask").addClass("active")
     $("#task").addClass("active")
     var checked = false;
 
     $(document).ready(function() {
-        $('#finishedTable').DataTable({
+        $('#taskGroupMember').DataTable({
             'paging'      : true,//启用分页
             'lengthChange': false,
             'searching'   : false,
@@ -186,81 +159,20 @@
             'info'        : false,
             'autoWidth'   : true,
 
-            //"ajax": './myCreateTaskList/finished',
+            "ajax": '/task/group//taskGroupMember/getMember/[[${userGroupId}]]',
             "columns": [
-                //任务编号
-                { "data": "taskId" },
-                //任务标题
-                { "data": "taskTitle" },
-                //任务内容
-                { "data": "taskContent" },
-                //任务对象
-                { "data": "taskTargetGroupList" },
-                //任务进度，任务完成/任务总数
-                { "data": function (data,type,row) {
-                        return   data.taskSubmittedNum +'/'+data.taskTargetNum;
-                    } },
-                //任务截止时间
-                { "data": function (data,type,row) {
-                        var date = new Date(data.taskEndTime);
-                        console.log(data)
-                        return   date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-                    }  },
+                //成员id
+                { "data": "id" },
+                //成员名称
+                { "data": "name" },
                 //操作
                 { "data": function (data,type,row) {
-                        return   '<a href="/task/detail/finished/'+data.taskId+'" >查看详情</a>'
-                    } }
-            ]
-        });
-        $('#unfinishedTable').DataTable({
-            'paging'      : true,//启用分页
-            'lengthChange': false,
-            'searching'   : false,
-            'ordering'    : true,//排序
-            'info'        : false,
-            'autoWidth'   : true,
-
-            "ajax": './myCreateTaskList/unfinished',
-            "columns": [
-                //任务编号
-                { "data": "taskId" },
-                //任务标题
-                { "data": "taskTitle" },
-                //任务内容
-                { "data": "taskContent" },
-                //任务对象
-                { "data": "taskTargetGroupList" },
-                //任务进度，任务完成/任务总数
-                { "data": function (data,type,row) {
-                        return   data.taskSubmittedNum +'/'+data.taskTargetNum;
-                    } },
-                //任务截止时间
-                { "data": function (data,type,row) {
-                    var date = new Date(data.taskEndTime);
-                    var now = new Date();
-                    var str_date=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-                    if(date.getTime() < now.getTime())
-                       str_date+="(截止日期已过！)" ;
-                    return str_date;
-                    }  },
-                //操作
-                { "data": function (data,type,row) {
-                        return   '<a href="/task/detail/unfinished/'+data.taskId+'" >查看详情</a>'+
-                            '<a href="/task/updateTask/'+data.taskId+'" >修改</a>'+
-                            '<a href="/task/complete/'+data.taskId+'" >直接完成</a>';
+                        return   '<a href="/task/group/forceDeleteMember/[[${userGroupId}]]/'+data.id+'" >强制退组</a>';
                     } }
             ]
         });
     } );
 
-    function getAllFinishedTask() {
-
-        if(!checked) {
-            var table = $('#finishedTable').DataTable();
-            table.ajax.url('./myCreateTaskList/finished').load();
-            checked=true;
-        }
-    }
 </script>
 
 

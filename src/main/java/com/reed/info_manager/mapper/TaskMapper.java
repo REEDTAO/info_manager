@@ -18,4 +18,12 @@ public interface TaskMapper {
     List<Task> getMyReceiveTaskListFinished(Integer id);
 
     Task getTaskByTaskId(Integer taskId);
+
+    int addReplyNum(Integer taskId);
+
+    int deleteTaskByTaskId(Integer taskId);
+
+    int updateTaskByTaskId(Task task);
+
+    int finishTask(Integer taskId);
 }

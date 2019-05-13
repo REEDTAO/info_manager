@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="/static/plugins/timepicker/bootstrap-timepicker.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="/static/bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -56,13 +57,64 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i>任务</a></li>
-                <li><a href="#">收到的任务</a></li>
+                <li><a href="#">发布的任务</a></li>
                 <li><a href="#">任务详情</a></li>
             </ol>
         </section>
-        <section class="content">
+        <!-- Main content -->
+        <section class="invoice">
+            <!-- title row -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header" >
+                        <span >任务详情</span>
+                        <small class="pull-right" th:text="|截止日期：|+${#dates.format(task.taskCreateTime,'yyyy-MM-dd')}"></small>
+                    </h2>
+                    <h4 th:text="|任务标题：|+${task.taskTitle}"></h4>
+                    <h4 th:text="|任务内容：|+${task.taskContent}"></h4>
+                    下载：<a th:href="|/fileManager/download?filePath=|+${task.taskFilePath}" >任务附件</a>
+                    <hr>
+                </div>
+                <h4>任务回复详情<i class="pull-right" style="margin-right: 15px"><a th:href="|/fileManager/download/pack?filePath=|+${task.taskFilePath}">附件打包下载</a></i></h4>
 
+                <div class="col-xs-12">
+                    <div class="tab-pane" id="replyDetail">
+                        <div class="box-body">
+                            <table id="finishedTable" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>用户编号</th>
+                                    <th>用户姓名</th>
+                                    <th>回复内容</th>
+                                    <th>回复时间</th>
+                                    <th>回复附件</th>
+                                </tr>
+                                </thead>
+                                <!--Integer taskReplyId;-->
+                                <!--String taskReplyContent;-->
+                                <!--String taskReplyFilePath;-->
+                                <!--Integer taskResponderId;-->
+                                <!--Integer taskId;-->
+                                <!--Date taskReplyTime;-->
+                                <tbody>
+                                    <tr th:each="reply : ${taskReplyList}">
+                                        <td th:text="${reply.taskResponderId}"></td>
+                                        <td th:text="321"></td>
+                                        <td th:text="${reply.taskReplyContent}"></td>
+                                        <td th:text="${#dates.format(reply.taskReplyTime,'yyyy-MM-dd')}"></td>
+                                        <td><a th:href="|/fileManager/download?filePath=|+${reply.taskReplyFilePath}">附件下载</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- /.col -->
+            </div>
         </section>
+
     </div>
 </div>
 
@@ -102,47 +154,23 @@
 <script src="/static/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/static/dist/js/demo.js"></script>
+<script src="/static/bower_components/ckeditor/ckeditor.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<script>
+    $(function () {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        CKEDITOR.replace('replyContent')
+        //bootstrap WYSIHTML5 - text editor
+        $('.textarea').wysihtml5()
+    })
+</script>
 
 
 <script>
     $("#receiveTaskList").addClass("active")
     $("#task").addClass("active")
-
-    $(document).ready(function() {
-        $('#searchGroupTable').DataTable({
-            'paging'      : true,//启用分页
-            'lengthChange': false,
-            'searching'   : false,
-            'ordering'    : true,//排序
-            'info'        : false,
-            'autoWidth'   : true,
-
-            "ajax": '',
-            "columns": [
-                //任务编号
-                { "data": "taskId" },
-                //任务标题
-                { "data": "taskContent" },
-                //任务内容
-                { "data": "taskContent" },
-                //任务对象
-                { "data": "taskTargets" },
-                //任务进度，任务完成/任务总数
-                { "data": "taskSubmittenNum" +'/' +"taskTargetNumber" },
-                //任务截止时间
-                { "data": "taskEndTime" },
-                //操作
-                { "data": "taskId" }
-            ]
-        });
-        var url = './myReceiveList/' + $('#searchName').val();
-        var table = $('#searchGroupTable').DataTable();
-        table.ajax.url(url).load();
-    } );
-
-
-
-
 
 
 </script>

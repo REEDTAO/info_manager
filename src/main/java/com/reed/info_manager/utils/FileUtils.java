@@ -4,6 +4,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static com.reed.info_manager.constant.Constant.FILE_ROOT_DIR;
 
@@ -32,6 +35,11 @@ public class FileUtils {
         return true;
     }
     public static boolean saveFileFullPath(MultipartFile file,String fullPath,String userName) {
+        deleteFileByUserName(fullPath,userName);
+        return  saveFileFullPath(file,fullPath);
+    }
+
+    public static void deleteFileByUserName(String fullPath,String userName){
         File temp = new File(fullPath);
         String[] list = temp.getParentFile().list();
         for (int i=0;i<list.length;i++){
@@ -40,7 +48,11 @@ public class FileUtils {
                 break;
             }
         }
-        return  saveFileFullPath(file,fullPath);
+    }
+    public static void deleteFileByFullPath(String filePath){
+        File file = new File(filePath);
+        if(file.exists())
+            file.delete();
     }
 
 
@@ -50,7 +62,11 @@ public class FileUtils {
             if (file.exists()) {
                 response.setContentType("application/octet-stream");//
                 response.setHeader("content-type", "application/octet-stream");
-                response.setHeader("Content-Disposition", "attachment;fileName=" + file.getName());// 设置文件名
+                try {
+                    response.setHeader("Content-Disposition", "attachment;fileName=" + new String(file.getName().getBytes("UTF-8"),"ISO-8859-1"));// 设置文件名
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
@@ -63,7 +79,6 @@ public class FileUtils {
                         os.write(buffer, 0, i);
                         i = bis.read(buffer);
                     }
-                    System.out.println("success");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -83,6 +98,80 @@ public class FileUtils {
                     }
                 }
             }
+    }
+
+
+    public static void  packFile(String filePath)  {
+        String zipFilename = FILE_ROOT_DIR+filePath+"/pack.zip";
+        File[] files = new File(FILE_ROOT_DIR+filePath+"/").listFiles();
+        File file = new File(zipFilename);
+        ZipOutputStream zipOutputStream=null;
+        FileOutputStream fileOutputStream = null;
+        if(file.exists()){
+            file.delete();
+        }
+        try {
+            file.createNewFile();
+            fileOutputStream = new FileOutputStream(file);
+            zipOutputStream = new ZipOutputStream(fileOutputStream);
+            zipFile(files,zipOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                zipOutputStream.close();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+
+    }
+
+    public static void zipFile(File[] files, ZipOutputStream outputStream) {
+        int size = files.length;
+        for (int i = 0; i < size; i++) {
+            File file = files[i];
+            zipFile(file, outputStream);
+        }
+    }
+
+
+    public static void zipFile(File inputFile, ZipOutputStream ouputStream) {
+        try {
+            if (inputFile.exists()) {
+                if (inputFile.isFile()) {
+                    FileInputStream IN = new FileInputStream(inputFile);
+                    BufferedInputStream bins = new BufferedInputStream(IN, 512);
+                    ZipEntry entry = new ZipEntry(inputFile.getName());
+                    ouputStream.putNextEntry(entry);
+                    // 向压缩文件中输出数据
+                    int nNumber;
+                    byte[] buffer = new byte[512];
+                    while ((nNumber = bins.read(buffer)) != -1) {
+                        ouputStream.write(buffer, 0, nNumber);
+                    }
+                    // 关闭创建的流对象
+                    bins.close();
+                    IN.close();
+                } else {
+                    try {
+                        File[] files = inputFile.listFiles();
+                        for (int i = 0; i < files.length; i++) {
+                            zipFile(files[i], ouputStream);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

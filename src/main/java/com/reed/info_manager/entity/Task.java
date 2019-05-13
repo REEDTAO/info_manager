@@ -21,5 +21,6 @@ public class Task {
     Integer taskFinished;
     List<Integer> taskTargetGroupIds;
     List<String> taskTargetGroupList;
+    String oldPath;
 
 }

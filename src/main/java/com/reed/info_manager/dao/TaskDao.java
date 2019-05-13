@@ -64,4 +64,16 @@ public class TaskDao {
     public Task getTaskByTaskId(Integer taskId) {
         return  taskMapper.getTaskByTaskId(taskId);
     }
+
+    public int deleteTaskByTaskId(Integer taskId) {
+        return taskMapper.deleteTaskByTaskId(taskId);
+    }
+
+    public int updateTaskByTaskId(Task task) {
+        return taskMapper.updateTaskByTaskId(task);
+    }
+
+    public int finishTask(Integer taskId) {
+        return taskMapper.finishTask(taskId);
+    }
 }

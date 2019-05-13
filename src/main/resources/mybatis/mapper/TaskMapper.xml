@@ -47,4 +47,38 @@
     <select id="getTaskByTaskId" resultType="com.reed.info_manager.entity.Task">
         select * from task where task_id = #{taskId}
     </select>
+    <!--int addReplyNum(Integer taskId);-->
+    <update id="addReplyNum">
+        update task set task_submitted_num =task_submitted_num+1
+    </update>
+
+    <!--int deleteTaskByTaskId(Integer taskId);-->
+    <delete id="deleteTaskByTaskId">
+        delete from task where task_id = #{taskId}
+    </delete>
+
+    <!--int updateTaskByTaskId(Integer taskId);-->
+    <!--#{taskCreatorId},-->
+    <!--#{taskCreateTime},-->
+    <!--#{taskEndTime},-->
+    <!--#{taskContent},-->
+    <!--#{taskSubmittedNum},-->
+    <!--#{taskTargetNum},-->
+    <!--#{taskFilePath},-->
+    <!--#{taskTitle},-->
+    <!--task_end_time = #{taskEndTime},-->
+    <update id="updateTaskByTaskId" >
+        update task
+          set
+              task_end_time = #{taskEndTime},
+              task_content = #{taskContent},
+              task_title = #{taskTitle},
+              task_file_path = #{taskFilePath}
+          where task_id = #{taskId}
+    </update>
+
+    <!--int finishTask(Integer taskId);-->
+    <update id="finishTask">
+        update task set task_finished = 1 where task_id = #{taskId}
+    </update>
 </mapper>

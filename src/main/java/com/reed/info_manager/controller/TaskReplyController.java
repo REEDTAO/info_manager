@@ -29,6 +29,7 @@ public class TaskReplyController {
     @PostMapping
     public String  myReply(@RequestParam("file") MultipartFile file , TaskReply taskReply, Model model){
         User user = (User)session.getAttribute("user");
+        taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath().substring(0,taskReply.getTaskReplyFilePath().lastIndexOf("/")));
         handleUpload(file,taskReply,model,user);
 
 
@@ -37,7 +38,6 @@ public class TaskReplyController {
         }else{
             model.addAttribute("message","回复失败！");
         }
-        taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath().substring(0,taskReply.getTaskReplyFilePath().lastIndexOf("/")));
         model.addAttribute("taskReply",taskReply);
         return "task/myReceiveFinishedDetail";
     }
@@ -78,7 +78,7 @@ public class TaskReplyController {
                 model.addAttribute("message", "文件保存失败！");
             }
             taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath().substring(FILE_ROOT_DIR.length()));
-        }else taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath()+"/"+FILE_PATH_IS_NULL);
+        }else taskReply.setTaskReplyFilePath(taskReply.getTaskReplyFilePath()+"/");
         taskReply.setTaskReplyTime(new Date());
         taskReply.setTaskResponderId(user.getId());
         System.out.println(taskReply.getTaskReplyFilePath());
