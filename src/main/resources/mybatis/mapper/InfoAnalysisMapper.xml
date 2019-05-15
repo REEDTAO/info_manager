@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reed.info_manager.mapper.InfoAnalysisMapper">
+    <!--Integer getTaskNumInWeek(Map timeForWeek);-->
+    <select id="getTaskNumInWeek" parameterType="hashmap" resultType="java.lang.Integer">
+        select count(*) from task where task_creator_id in (
+          select creator_id from user_group where user_group_id in(
+            select user_group_id from user_role where user_id=#{userId}
+          )
+        ) and task_create_time between #{beginTime} and #{endTime}
+    </select>
+</mapper>

@@ -2,10 +2,12 @@ package com.reed.info_manager;
 
 
 import com.github.pagehelper.PageHelper;
+import com.reed.info_manager.controller.InfoAnalysisController;
 import com.reed.info_manager.entity.Task;
 import com.reed.info_manager.entity.User;
 import com.reed.info_manager.mapper.UserGroupMapper;
 import com.reed.info_manager.mapper.UserRoleMapper;
+import com.reed.info_manager.service.InfoAnalysisService;
 import com.reed.info_manager.service.TaskService;
 import com.reed.info_manager.service.UserGroupService;
 import com.reed.info_manager.service.UserService;
@@ -33,6 +35,8 @@ public class InfoManagerApplicationTests {
     UserRoleMapper userRoleMapper;
     @Autowired
     TaskService taskService;
+    @Autowired
+    InfoAnalysisService infoAnalysisService;
 
     @Test
     public void test(){
@@ -81,4 +85,12 @@ public class InfoManagerApplicationTests {
         FileUtils.packFile("2019/5/9/admin第一次提交");
     }
 
+    @Test
+    public void testInfoAnalysis(){
+//        List<Integer> lineChartData = new ArrayList<>();
+//        for(int i= 1;i<=7;i++){
+//            lineChartData.add(infoAnalysisService.getTaskNumInWeek(InfoAnalysisController.getTimeForWeek(i)));
+//        }
+//        System.out.println(lineChartData);
+    }
 }

@@ -1,5 +1,6 @@
 package com.reed.info_manager.dao;
 
+import com.reed.info_manager.entity.PieChartData;
 import com.reed.info_manager.entity.TaskReply;
 import com.reed.info_manager.mapper.TaskMapper;
 import com.reed.info_manager.mapper.TaskReplyMapper;
@@ -30,5 +31,10 @@ public class TaskReplyDao {
 
     public List<TaskReply> getTaskReplyListByTaskId(Integer taskId) {
         return taskReplyMapper.getTaskReplyListByTaskId(taskId);
+    }
+
+    public List<PieChartData> getTaskReplyListByUserId(Integer id) {
+
+
     }
 }

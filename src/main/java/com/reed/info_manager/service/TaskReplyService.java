@@ -1,6 +1,7 @@
 package com.reed.info_manager.service;
 
 import com.reed.info_manager.dao.TaskReplyDao;
+import com.reed.info_manager.entity.PieChartData;
 import com.reed.info_manager.entity.TaskReply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,9 @@ public class TaskReplyService {
 
     public List<TaskReply> getTaskReplyListByTaskId(Integer taskId) {
         return taskReplyDao.getTaskReplyListByTaskId(taskId);
+    }
+
+    public List<PieChartData> getTaskReplyListByUserId(Integer id) {
+        return taskReplyDao.getTaskReplyListByUserId(id);
     }
 }
