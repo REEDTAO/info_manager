@@ -11,4 +11,12 @@
           )
         ) and task_create_time between #{beginTime} and #{endTime}
     </select>
+
+
+    <!--Integer getTaskNumByGroup(Map map);-->
+    <select id="getTaskNumByGroup" resultType="int">
+        select count(*) from task t inner join task_target tt on  t.task_id = tt.task_id
+        where tt.task_target_group_id=#{taskGroupId} and task_create_time
+        between #{beginTime} and #{endTime}
+    </select>
 </mapper>

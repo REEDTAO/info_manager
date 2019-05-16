@@ -76,4 +76,8 @@ public class TaskDao {
     public int finishTask(Integer taskId) {
         return taskMapper.finishTask(taskId);
     }
+
+    public List<Task> getMyReceiveTaskListUnfinishedOrderByTime(Integer id) {
+        return taskMapper.getMyReceiveTaskListUnfinishedOrderByTime(id);
+    }
 }

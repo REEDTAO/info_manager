@@ -35,4 +35,17 @@
     <select id="getTaskReplyListByTaskId" resultType="com.reed.info_manager.entity.TaskReply">
         select * from task_reply where task_id = #{taskId}
     </select>
+
+    <!--List<PieChartData> getTaskReplyMapByUserId(Integer id);-->
+    <select id="getTaskReplyMapByUserId" resultType="com.reed.info_manager.entity.PieChartData">
+        select g.name as label,count(*) as 'value'
+        from task_reply r left join (task_target t, user_group g) on (r.task_id=t.task_id and t.task_target_group_id = g.user_group_id) where r.task_responder_id =  #{id}
+        GROUP BY g.name
+    </select>
+
+
+    <!--Integer getTaskReplyByTaskGroupNameAndUserId(@Param("userId") Integer userId, @Param("taskGroupId") Integer taskGroupId);-->
+    <select id="getTaskReplyByTaskGroupNameAndUserId" resultType="string">
+        select count(*) from task_reply
+    </select>
 </mapper>

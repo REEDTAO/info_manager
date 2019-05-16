@@ -14,4 +14,8 @@ public class InfoAnalysisDao {
         return infoAnalysisMapper.getTaskNumInWeek(timeForWeek);
 
     }
+
+    public Integer getTaskNumByGroup(Map map) {
+        return infoAnalysisMapper.getTaskNumByGroup(map);
+    }
 }

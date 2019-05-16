@@ -26,4 +26,6 @@ public interface TaskMapper {
     int updateTaskByTaskId(Task task);
 
     int finishTask(Integer taskId);
+
+    List<Task> getMyReceiveTaskListUnfinishedOrderByTime(Integer id);
 }

@@ -48,4 +48,8 @@ public class TaskService {
     public int finishTask(Integer taskId) {
         return taskDao.finishTask(taskId);
     }
+
+    public List<Task> getMyReceiveTaskListUnfinishedOrderByTime(Integer id) {
+        return taskDao.getMyReceiveTaskListUnfinishedOrderByTime(id);
+    }
 }

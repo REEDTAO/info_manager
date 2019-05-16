@@ -1,8 +1,10 @@
 package com.reed.info_manager.mapper;
 
+import com.reed.info_manager.entity.PieChartData;
 import com.reed.info_manager.entity.TaskReply;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -15,4 +17,10 @@ public interface TaskReplyMapper {
     int updateTaskReply(TaskReply taskReply);
 
     List<TaskReply> getTaskReplyListByTaskId(Integer taskId);
+
+
+
+    List<PieChartData> getTaskReplyMapByUserId(Integer id);
+
+    Integer getTaskReplyByTaskGroupNameAndUserId(@Param("userId") Integer userId, @Param("taskGroupId") Integer taskGroupId);
 }

@@ -29,4 +29,5 @@ public class UserGroupService {
     public List<UserGroupJoin> searchGroupByNameForPage(String name) {
         return userGroupDao.searchGroupByNameForPage(name);
     }
+
 }

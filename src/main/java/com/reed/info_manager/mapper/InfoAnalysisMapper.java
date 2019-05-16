@@ -7,4 +7,6 @@ import java.util.Map;
 @Mapper
 public interface InfoAnalysisMapper {
      Integer getTaskNumInWeek(Map timeForWeek);
+
+    Integer getTaskNumByGroup(Map map);
 }

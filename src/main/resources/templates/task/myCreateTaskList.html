@@ -256,6 +256,7 @@
     function getAllFinishedTask() {
 
         if(!checked) {
+
             var table = $('#finishedTable').DataTable();
             table.ajax.url('./myCreateTaskList/finished').load();
             checked=true;

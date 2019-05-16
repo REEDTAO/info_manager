@@ -32,4 +32,9 @@ public class TaskReplyService {
     public List<PieChartData> getTaskReplyListByUserId(Integer id) {
         return taskReplyDao.getTaskReplyListByUserId(id);
     }
+
+    public Integer getTaskReplyByTaskGroupNameAndUserId(Integer userId, Integer taskGroupId) {
+
+        return taskReplyDao.getTaskReplyByTaskGroupNameAndUserId(userId,taskGroupId);
+    }
 }

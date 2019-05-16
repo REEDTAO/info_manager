@@ -27,4 +27,5 @@ public class UserGroupDao {
     public List<UserGroupJoin> searchGroupByNameForPage(String name) {
         return userGroupMapper.selectAllGroupByGroupName(name);
     }
+
 }

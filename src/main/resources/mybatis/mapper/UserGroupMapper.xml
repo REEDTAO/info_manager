@@ -26,4 +26,6 @@
     <delete id="deleteGroup" >
         delete from user_group where creator_id=#{id} and name=#{groupName}
     </delete>
+
+
 </mapper>

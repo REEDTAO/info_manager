@@ -16,4 +16,5 @@ public interface UserGroupMapper {
     int deleteGroup(@Param("id") Integer id,@Param("groupName") String groupName);
 
     List<UserGroupJoin> selectAllGroupByGroupName(String name);
+
 }

@@ -14,4 +14,9 @@ public class InfoAnalysisService {
     public Integer getTaskNumInWeek(Map timeForWeek) {
         return infoAnalysisDao.getTaskNumInWeek(timeForWeek);
     }
+
+    public Integer getTaskNumByGroup(Map map) {
+
+        return infoAnalysisDao.getTaskNumByGroup(map);
+    }
 }

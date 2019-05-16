@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.util.Calendar;
 import java.util.Date;
 
-import static com.reed.info_manager.constant.Constant.FILE_PATH_IS_NULL;
 import static com.reed.info_manager.constant.Constant.FILE_ROOT_DIR;
 
 @Controller

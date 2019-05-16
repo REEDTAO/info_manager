@@ -6,27 +6,29 @@
   <title>AdminLTE 2 | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="/static/bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="/static/dist/css/skins/_all-skins.min.css">
-  <!-- Morris chart -->
-  <link rel="stylesheet" href="/static/bower_components/morris.js/morris.css">
-  <!-- jvectormap -->
-  <link rel="stylesheet" href="/static/bower_components/jvectormap/jquery-jvectormap.css">
-  <!-- Date Picker -->
-  <link rel="stylesheet" href="/static/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="/static/bower_components/bootstrap-daterangepicker/daterangepicker.css">
-  <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/static/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="/static/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="/static/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="/static/plugins/iCheck/all.css">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="/static/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+    <!-- Bootstrap time Picker -->
+    <link rel="stylesheet" href="/static/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/static/bower_components/select2/dist/css/select2.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/static/dist/css/skins/_all-skins.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -91,14 +93,24 @@
                 <!-- LINE CHART -->
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">任务接收情况分析图</h3>
+                        <h3 class="box-title ">过去七周任务量变化趋势图</h3>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <button onclick="addLineChartData()"  type="button" class="btn btn-primary pull-right"  style="margin-left: 10px;margin-right: 10px">添加</button>
+                        <div class="pull-right col-md-3" id="select" style="" >
+                            <select    class="form-control select2 " multiple="multiple" data-placeholder="没有可选择的曲线！"
+                                    style="width: 100%;" th:if="${targetList == null}" disabled >
+                                <option th:each="target : ${targetList}" th:text="${target}"></option>
+                            </select>
+                            <select name="taskTargetGroupList" class="form-control select2" multiple="multiple" data-placeholder="选择曲线"
+                                    style="width: 100%;" th:if="${targetList != null}"  >
+                                <option th:each="target : ${targetList}" th:text="${target}"></option>
+                            </select>
+
                         </div>
+
+
                     </div>
+
                     <div class="box-body chart-responsive">
                         <div class="chart" id="line-chart" style="height: 300px;"></div>
                     </div>
@@ -138,6 +150,8 @@
 </script>
 <!-- Bootstrap 3.3.7 -->
 <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
 <!-- Morris.js charts -->
 <script src="/static/bower_components/raphael/raphael.min.js"></script>
 <script src="/static/bower_components/morris.js/morris.min.js"></script>
@@ -166,50 +180,65 @@
 <script src="/static/bower_components/chart.js/Chart.js"></script>
 <script src="/static/bower_components/raphael/raphael.min.js"></script>
 <script src="/static/bower_components/morris.js/morris.min.js"></script>
+
+<!-- FLOT CHARTS -->
+<script src="/static/bower_components/Flot/jquery.flot.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="/static/bower_components/Flot/jquery.flot.resize.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="/static/bower_components/Flot/jquery.flot.pie.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="/static/bower_components/Flot/jquery.flot.categories.js"></script>
+
+<!-- Select2 -->
+<script src="/static/bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/static/dist/js/demo.js"></script>
 <script th:inline="javascript">
     $("#publicNotice").addClass("active")
 
-    $(function(){
-        $.get("/infoAnalysis/getPieChartData",function(data,status){
+
+    $(function() {
+
+        $.get("/infoAnalysis/getPieChartData", function (data, status) {
             var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-            var pieChart       = new Chart(pieChartCanvas);
-            var PieData=data;
-        // <li ><i class="fa fa-circle-o text-red"></i> Chrome</li>
+            var pieChart = new Chart(pieChartCanvas);
+            var PieData = data;
+            // <li ><i class="fa fa-circle-o text-red"></i> Chrome</li>
 
             //console.log(data);
+
             var element_li = function (data) {
-                var str="";
+                var str = "";
                 for (x in data) {
                     //console.log(data[x]);
-                    str+="<li ><i class='fa fa-circle-o' style='color: "+ data[x].color +"'></i>"+data[x].label+"</li>"
+                    str += "<li ><i class='fa fa-circle-o' style='color: " + data[x].color + "'></i>" + data[x].label + "</li>"
                 }
                 return str;
             }
             $("#list").append(element_li(data));
 
-            var pieOptions     = {
+            var pieOptions = {
                 //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke    : true,
+                segmentShowStroke: true,
                 //String - The colour of each segment stroke
-                segmentStrokeColor   : '#fff',
+                segmentStrokeColor: '#fff',
                 //Number - The width of each segment stroke
-                segmentStrokeWidth   : 2,
+                segmentStrokeWidth: 2,
                 //Number - The percentage of the chart that we cut out of the middle
                 percentageInnerCutout: 50, // This is 0 for Pie charts
                 //Number - Amount of animation steps
-                animationSteps       : 100,
+                animationSteps: 100,
                 //String - Animation easing effect
-                animationEasing      : 'easeOutBounce',
+                animationEasing: 'easeOutBounce',
                 //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate        : true,
+                animateRotate: true,
                 //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale         : false,
+                animateScale: false,
                 //Boolean - whether to make the chart responsive to window resizing
-                responsive           : true,
+                responsive: true,
                 // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-                maintainAspectRatio  : true,
+                maintainAspectRatio: true,
                 //String - A legend template
                 // legendTemplate       : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
             }
@@ -219,37 +248,99 @@
         });
 
 
-        // LINE CHART
-        var line = new Morris.Line({
-            element: 'line-chart',
-            resize: true,
-            data: [
-                {y: '1999-01', item1: [[${ lineChartData[0] }]]},
-                {y: '1999-02', item1: [[${ lineChartData[1] }]]},
-                {y: '1999-03', item1: [[${ lineChartData[2] }]]},
-                {y: '1999-04', item1: [[${ lineChartData[3] }]]},
-                {y: '1999-05', item1: [[${ lineChartData[4] }]]},
-                {y: '1999-06', item1: [[${ lineChartData[5] }]]},
-                {y: '1999-07', item1: [[${ lineChartData[6] }]]}
+        /*
+    * LINE CHART
+    * ----------
+    */
+        //LINE randomly generated data
 
-            ],
-            xkey: 'y',
-            ykeys: ['item1'],
-            labels: ['当周接收任务总数'],
-            lineColors: ['#3c8dbc'],
-            hideHover: 'true',
-            xLabelFormat: function(d) {
-                return (d.getMonth()+1).toString()+"周前";
+        options = {
+            grid: {
+                hoverable: true,
+                    borderColor: '#f3f3f3',
+                    borderWidth: 1,
+                    tickColor: '#f3f3f3'
             },
-            hoverCallback: function(index, options, content) {
-                console.log(options.data[index]);
-                return options.labels+'：'+options.data[index].item1;
+            series: {
+                shadowSize: 0,
+                    lines: {
+                    show: true
+                },
+                points: {
+                    show: true
+                }
+            },
+            lines: {
+                fill: false,
+                    color: ['#3c8dbc', '#666666']
+            },
+            yaxis: {
+                show: true
+            },
+            xaxis: {
+                show: true
             }
+        }
+         lines = [];
+        $.plot('#line-chart', lines,options)
 
 
-        });
+        $.get("/infoAnalysis/getLineChartData", function (data, status) {
+            //console.log(data)
+            lines=[];
+         $.plot('#line-chart', lines, options);
+            //Initialize tooltip on hover
+            $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
+                position: 'absolute',
+                display: 'none',
+                opacity: 0.8
+            }).appendTo('body')
+            $('#line-chart').bind('plothover', function (event, pos, item) {
+                console.log(item);
+                if (item) {
+                    var x = item.datapoint[0],
+                        y = item.datapoint[1]
+
+                    $('#line-chart-tooltip').html(item.series.label + ' ：前 ' + x + ' 周当周完成任务总数： ' + y)
+                        .css({top: item.pageY + 5, left: item.pageX + 5})
+                        .fadeIn(200)
+                } else {
+                    $('#line-chart-tooltip').hide()
+                }
+
+            })
+        })
+
+
+
+
+
     })
+    function addLineChartData() {
+        var selected = $("#select select").select2("val");
+        lines=[];
+        for (var i=0;i<selected.length;i++){
+            $.get("/infoAnalysis/getLineChartData/"+selected[i], function (data, status) {
+                lines.push(data)
+                $.plot('#line-chart', lines, options);
+            })
+        }
 
+    }
+
+</script>
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Date picker
+        $('#datepicker').datepicker({
+            autoclose: true
+        })
+
+
+    })
 </script>
 </body>
 

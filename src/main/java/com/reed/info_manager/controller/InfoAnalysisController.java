@@ -1,5 +1,6 @@
 package com.reed.info_manager.controller;
 
+import com.reed.info_manager.constant.Constant;
 import com.reed.info_manager.entity.PieChartData;
 import com.reed.info_manager.entity.TaskReply;
 import com.reed.info_manager.entity.User;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,20 +36,32 @@ public class InfoAnalysisController {
     @Autowired
     TaskReplyService taskReplyService;
 
+
     @GetMapping
     public String getInfoAnalysis(Model model){
         //lineChart initData
         User user = (User) session.getAttribute("user");
-        List<Integer> lineChartData = new ArrayList<>();
-        for(int i= 1;i<=7;i++){
-            lineChartData.add(infoAnalysisService.getTaskNumInWeek(getTimeForWeek(i,user.getId())));
-        }
-        model.addAttribute("lineChartData",lineChartData);
-
-        System.out.println(lineChartData);
-
+//        List<Integer> lineChartData = new ArrayList<>();
+//        for(int i= 1;i<=7;i++){
+//            lineChartData.add(infoAnalysisService.getTaskNumInWeek(getTimeForWeek(i,user.getId())));
+//        }
+//        model.addAttribute("lineChartData",lineChartData);
+//
+//        System.out.println(lineChartData);
+//
+//        List<UserGroup> allGroup = userGroupService.getAllGroup(user.getId());
+//        session.setAttribute("userGroupList",allGroup);
         List<UserGroup> allGroup = userGroupService.getAllGroup(user.getId());
-        session.setAttribute("userGroupList",allGroup);
+        if (allGroup!=null&&allGroup.size()!=0) {
+            List<String> groupNameList  = new ArrayList<>();
+            Map<String,Integer> idMaps = new HashMap<>();
+            for (UserGroup group : allGroup) {
+                groupNameList.add(group.getName());
+                idMaps.put(group.getName(),group.getUserGroupId());
+            }
+            session.setAttribute("idMap",idMaps);
+            model.addAttribute("targetList",groupNameList);
+        }
 
 
         return "info/infoAnalysisIndex";
@@ -55,11 +69,46 @@ public class InfoAnalysisController {
 
     @GetMapping("/getPieChartData")
     @ResponseBody
-    public PieChartData[] getPieChartData(){
+    public Object[] getPieChartData(){
         User user = (User) session.getAttribute("user");
         List<PieChartData> list= taskReplyService.getTaskReplyListByUserId(user.getId());
-        return (PieChartData[]) list.toArray();
+        return list.toArray();
     }
+
+    @GetMapping("/getLineChartData")
+    @ResponseBody
+    public Map getLineChartData(){
+        int[][] line1 = {{1,1},{2,2},{3,3}};
+        Map map = new HashMap();
+        map.put("data",line1);
+        map.put("color", Constant.randomColor());
+        map.put("label","line1");
+        return map;
+    }
+    @GetMapping("/getLineChartData/{taskGroupName}")
+    @ResponseBody
+    public Map getLineChartDataByTaskGroupId(@PathVariable("taskGroupName") String taskGroupName){
+
+        User user = (User) session.getAttribute("user");
+        Map<String,Integer> idMaps = (Map<String, Integer>) session.getAttribute("idMap");
+        List<Integer> list = new ArrayList<>();
+
+        //System.out.println(idMaps.get(taskGroupName));
+        int[][] data = new int[7][2];
+        for(int i =1;i<=7;i++){
+            Map map = getTimeForWeek(i, user.getId());
+            map.put("taskGroupId",idMaps.get(taskGroupName));
+            data[i-1][0]=i;
+            data[i-1][1]=infoAnalysisService.getTaskNumByGroup(map);
+        }
+
+        Map map = new HashMap();
+        map.put("data",data);
+        map.put("color", Constant.randomColor());
+        map.put("label",taskGroupName);
+        return map;
+    }
+
 
     public static Map getTimeForWeek(int weekNum,Integer userId){
         Map<String, Object> map = new HashMap<>();
@@ -76,13 +125,6 @@ public class InfoAnalysisController {
         return map;
     }
 
-    public static String randomColor() {
-        Random random = new Random();
-        int r = random.nextInt(256);
 
-        int g = random.nextInt(256);
-        int b = random.nextInt(256);
-        return "#"+Integer.toHexString(r)+Integer.toHexString(g)+Integer.toHexString(b);
-    }
 
 }
