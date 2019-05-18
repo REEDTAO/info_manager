@@ -44,8 +44,16 @@
     </select>
 
 
-    <!--Integer getTaskReplyByTaskGroupNameAndUserId(@Param("userId") Integer userId, @Param("taskGroupId") Integer taskGroupId);-->
-    <select id="getTaskReplyByTaskGroupNameAndUserId" resultType="string">
-        select count(*) from task_reply
+    <!--List<TaskReply> getTaskReplyByTaskGroupNameAndUserId(@Param("userId") Integer userId, @Param("taskGroupId") Integer taskGroupId);-->
+    <!--String taskTitle;-->
+    <!--String content;-->
+    <!--String filePath;-->
+    <!--Date replyTime;-->
+    <select id="getTaskReplyByTaskGroupNameAndUserId" resultType="com.reed.info_manager.entity.Track">
+        select task.task_title as task_title, r.task_reply_content as content , r.task_reply_file_path as file_path , r.task_reply_time as reply_time
+         from task_reply r
+         left  join task_target t on r.task_id = t.task_id
+         left join task on r.task_id = task.task_id
+         where r.task_responder_id = #{taskGroupId} and t.task_target_group_id = #{userId}
     </select>
 </mapper>

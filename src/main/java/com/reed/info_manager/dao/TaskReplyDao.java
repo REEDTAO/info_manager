@@ -1,16 +1,14 @@
 package com.reed.info_manager.dao;
 
 import com.reed.info_manager.entity.PieChartData;
-import com.reed.info_manager.entity.Task;
 import com.reed.info_manager.entity.TaskReply;
+import com.reed.info_manager.entity.Track;
 import com.reed.info_manager.mapper.TaskMapper;
 import com.reed.info_manager.mapper.TaskReplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Repository
@@ -50,7 +48,7 @@ public class TaskReplyDao {
 
     }
 
-    public Integer getTaskReplyByTaskGroupNameAndUserId(Integer userId, Integer taskGroupId) {
-        return  taskReplyMapper.getTaskReplyByTaskGroupNameAndUserId(userId,taskGroupId);
+    public List<Track> getTaskReplyByTaskGroupNameAndUserId(Integer taskGroupId, Integer userId ) {
+        return  taskReplyMapper.getTaskReplyByTaskGroupNameAndUserId(taskGroupId,userId);
     }
 }

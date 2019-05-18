@@ -70,10 +70,10 @@
           <ul class="timeline">
             <!-- timeline time label -->
             <li class="time-label">
-                  <span class="bg-red" th:if="${list!=null}">
+                  <span class="bg-red" th:if="${list.size()!=0}">
                       以下任务需尽快完成
                   </span>
-                <span class="bg-red" th:if="${list==null}">
+                <span class="bg-red" th:if="${list.size()==0}">
                       近期无任务
                   </span>
             </li>
@@ -102,6 +102,7 @@
                       <div class="timeline-footer">
                           <a class="btn btn-primary btn-xs" th:href="|/task/myReceiveTaskList/unfinish/taskDetail/|+${task.taskId}">去完成</a>
                       </div>
+                  </div>
               </li>
 
             <li>

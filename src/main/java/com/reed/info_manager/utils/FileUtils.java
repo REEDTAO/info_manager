@@ -60,7 +60,7 @@ public class FileUtils {
     public static void fileDownload(String filePath, HttpServletResponse response){
             File file = new File(FILE_ROOT_DIR + "/" + filePath);
             if (file.exists()) {
-                response.setContentType("application/octet-stream");//
+                response.setContentType("application/octet-stream");
                 response.setHeader("content-type", "application/octet-stream");
                 try {
                     response.setHeader("Content-Disposition", "attachment;fileName=" + new String(file.getName().getBytes("UTF-8"),"ISO-8859-1"));// 设置文件名
@@ -100,10 +100,33 @@ public class FileUtils {
             }
     }
 
+    public static void packMyTrack(String userName,List<String> list){
+        String zipFilename = FILE_ROOT_DIR+"temp/"+userName+"/pack.zip";
+        File[] files = new File[list.size()];
+        for(int i=0;i<list.size();i++){
+            if (list.get(i).endsWith("/")) continue;
+            files[i] = new File(FILE_ROOT_DIR+list.get(i));
+        }
+        list.set(0,files[0].getName());
+        packFile(null,zipFilename,files,list);
+
+    }
 
     public static void  packFile(String filePath)  {
-        String zipFilename = FILE_ROOT_DIR+filePath+"/pack.zip";
-        File[] files = new File(FILE_ROOT_DIR+filePath+"/").listFiles();
+        packFile(filePath,null,null,null);
+    }
+
+    public static void  packFile(String filePath,String zipFileName,File[] fileList,List<String> zipEntryName)  {
+        String zipFilename ;
+        File[] files ;
+        if(filePath==null&&zipFileName!=null&&fileList!=null){
+            zipFilename = zipFileName;
+            files=fileList;
+        }else{
+            zipFilename = FILE_ROOT_DIR+filePath+"/pack.zip";
+            files = new File(FILE_ROOT_DIR+filePath+"/").listFiles();
+        }
+
         File file = new File(zipFilename);
         ZipOutputStream zipOutputStream=null;
         FileOutputStream fileOutputStream = null;
@@ -114,7 +137,10 @@ public class FileUtils {
             file.createNewFile();
             fileOutputStream = new FileOutputStream(file);
             zipOutputStream = new ZipOutputStream(fileOutputStream);
-            zipFile(files,zipOutputStream);
+            if(zipEntryName!=null)
+                zipFile(files,zipOutputStream,zipEntryName);
+            else
+                zipFile(file,zipOutputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
@@ -125,29 +151,35 @@ public class FileUtils {
                 e.printStackTrace();
             }
         }
-
-
-
-
-
     }
 
     public static void zipFile(File[] files, ZipOutputStream outputStream) {
+        zipFile(files,outputStream,null);
+    }
+
+    public static void zipFile(File[] files, ZipOutputStream outputStream,List<String> zipEntryName) {
         int size = files.length;
         for (int i = 0; i < size; i++) {
             File file = files[i];
-            zipFile(file, outputStream);
+            zipFile(file, outputStream,zipEntryName.get(i));
         }
     }
 
 
-    public static void zipFile(File inputFile, ZipOutputStream ouputStream) {
+
+    public static void zipFile(File inputFile, ZipOutputStream ouputStream){
+        zipFile(inputFile,ouputStream,null);
+    }
+
+
+    public static void zipFile(File inputFile, ZipOutputStream ouputStream,String filePath) {
+        if (filePath==null)filePath = inputFile.getName();
         try {
             if (inputFile.exists()) {
                 if (inputFile.isFile()) {
                     FileInputStream IN = new FileInputStream(inputFile);
                     BufferedInputStream bins = new BufferedInputStream(IN, 512);
-                    ZipEntry entry = new ZipEntry(inputFile.getName());
+                    ZipEntry entry = new ZipEntry(filePath);
                     ouputStream.putNextEntry(entry);
                     // 向压缩文件中输出数据
                     int nNumber;

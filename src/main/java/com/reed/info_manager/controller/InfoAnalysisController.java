@@ -1,27 +1,29 @@
 package com.reed.info_manager.controller;
 
 import com.reed.info_manager.constant.Constant;
-import com.reed.info_manager.entity.PieChartData;
-import com.reed.info_manager.entity.TaskReply;
-import com.reed.info_manager.entity.User;
-import com.reed.info_manager.entity.UserGroup;
-import com.reed.info_manager.service.InfoAnalysisService;
-import com.reed.info_manager.service.TaskReplyService;
-import com.reed.info_manager.service.UserGroupService;
-import com.reed.info_manager.service.UserService;
+import com.reed.info_manager.entity.*;
+import com.reed.info_manager.service.*;
+import com.reed.info_manager.utils.FileUtils;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
+
+import static com.reed.info_manager.constant.Constant.FILE_ROOT_DIR;
 
 @Controller
 @RequestMapping("/infoAnalysis")
@@ -30,7 +32,7 @@ public class InfoAnalysisController {
     @Autowired
     InfoAnalysisService infoAnalysisService;
     @Autowired
-    UserGroupService userGroupService;
+    UserRoleService userRoleService;
     @Autowired
     HttpSession session;
     @Autowired
@@ -51,7 +53,7 @@ public class InfoAnalysisController {
 //
 //        List<UserGroup> allGroup = userGroupService.getAllGroup(user.getId());
 //        session.setAttribute("userGroupList",allGroup);
-        List<UserGroup> allGroup = userGroupService.getAllGroup(user.getId());
+        List<UserGroup> allGroup = userRoleService.searchMyJoinUserGroup(user.getId());
         if (allGroup!=null&&allGroup.size()!=0) {
             List<String> groupNameList  = new ArrayList<>();
             Map<String,Integer> idMaps = new HashMap<>();
@@ -60,11 +62,30 @@ public class InfoAnalysisController {
                 idMaps.put(group.getName(),group.getUserGroupId());
             }
             session.setAttribute("idMap",idMaps);
+            session.setAttribute("targetList",groupNameList);
             model.addAttribute("targetList",groupNameList);
         }
 
 
         return "info/infoAnalysisIndex";
+    }
+
+    @PostMapping("/getMyTrack")
+    public String getMyTrack(String userGroupName,Model model){
+        User user = (User) session.getAttribute("user");
+        Map<String,Integer> idMaps = (Map<String, Integer>) session.getAttribute("idMap");
+        Integer groupId = idMaps.get(userGroupName);
+        List<Track> list = taskReplyService.getTaskReplyByTaskGroupNameAndUserId(groupId,user.getId());
+        model.addAttribute("list",list);
+        model.addAttribute("userGroupId",groupId);
+        model.addAttribute("targetList",session.getAttribute("targetList"));
+        return "info/infoAnalysisIndex";
+    }
+
+
+    @GetMapping("/test")
+    public void test(SpringTemplateEngine engine) throws IOException {
+
     }
 
     @GetMapping("/getPieChartData")
@@ -106,6 +127,7 @@ public class InfoAnalysisController {
         map.put("data",data);
         map.put("color", Constant.randomColor());
         map.put("label",taskGroupName);
+        System.out.println(map);
         return map;
     }
 

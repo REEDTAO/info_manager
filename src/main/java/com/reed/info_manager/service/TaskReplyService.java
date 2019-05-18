@@ -3,6 +3,7 @@ package com.reed.info_manager.service;
 import com.reed.info_manager.dao.TaskReplyDao;
 import com.reed.info_manager.entity.PieChartData;
 import com.reed.info_manager.entity.TaskReply;
+import com.reed.info_manager.entity.Track;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +34,8 @@ public class TaskReplyService {
         return taskReplyDao.getTaskReplyListByUserId(id);
     }
 
-    public Integer getTaskReplyByTaskGroupNameAndUserId(Integer userId, Integer taskGroupId) {
+    public List<Track> getTaskReplyByTaskGroupNameAndUserId(Integer taskGroupId, Integer userId ) {
 
-        return taskReplyDao.getTaskReplyByTaskGroupNameAndUserId(userId,taskGroupId);
+        return taskReplyDao.getTaskReplyByTaskGroupNameAndUserId(taskGroupId,userId);
     }
 }

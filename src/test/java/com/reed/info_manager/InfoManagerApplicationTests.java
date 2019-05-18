@@ -2,15 +2,14 @@ package com.reed.info_manager;
 
 
 import com.github.pagehelper.PageHelper;
+import com.reed.info_manager.constant.Constant;
 import com.reed.info_manager.controller.InfoAnalysisController;
 import com.reed.info_manager.entity.Task;
+import com.reed.info_manager.entity.Track;
 import com.reed.info_manager.entity.User;
 import com.reed.info_manager.mapper.UserGroupMapper;
 import com.reed.info_manager.mapper.UserRoleMapper;
-import com.reed.info_manager.service.InfoAnalysisService;
-import com.reed.info_manager.service.TaskService;
-import com.reed.info_manager.service.UserGroupService;
-import com.reed.info_manager.service.UserService;
+import com.reed.info_manager.service.*;
 import com.reed.info_manager.utils.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +45,10 @@ public class InfoManagerApplicationTests {
     TaskService taskService;
     @Autowired
     InfoAnalysisService infoAnalysisService;
+    @Autowired
+    TaskReplyService taskReplyService;
+    @Autowired
+    SpringTemplateEngine engine;
 
     @Test
     public void test(){
@@ -92,5 +104,28 @@ public class InfoManagerApplicationTests {
 //            lineChartData.add(infoAnalysisService.getTaskNumInWeek(InfoAnalysisController.getTimeForWeek(i)));
 //        }
 //        System.out.println(lineChartData);
+    }
+    @Test
+    public void testHtmlEngine() throws IOException {
+        Context context = new Context();
+        List<Track> list = taskReplyService.getTaskReplyByTaskGroupNameAndUserId(35,3);
+        context.setVariable("list",list);
+        String result = engine.process("public/track",context);
+        File file = new File(Constant.FILE_ROOT_DIR+"temp/卢2/"+"track1.html");
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        FileOutputStream out = new FileOutputStream(file);
+        out.write(result.getBytes());
+        out.close();
+
+
+        List<String> fileList= new ArrayList<>();
+        fileList.add("temp/卢2/"+"track1.html");
+        for (Track track : list){
+            fileList.add(track.getFilePath());
+        }
+        FileUtils.packMyTrack("卢2",fileList);
+
+
     }
 }

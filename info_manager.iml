@@ -102,5 +102,7 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-devtools:2.1.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.1.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.1.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: ognl:ognl:3.2.10" level="project" />
+    <orderEntry type="library" name="Maven: org.javassist:javassist:3.24.1-GA" level="project" />
   </component>
 </module>

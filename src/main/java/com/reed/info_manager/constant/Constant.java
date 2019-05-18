@@ -14,7 +14,13 @@ public  class Constant  {
         int r = random.nextInt(256);
         int g = random.nextInt(256);
         int b = random.nextInt(256);
-        return "#"+Integer.toHexString(r)+Integer.toHexString(g)+Integer.toHexString(b);
+        return "#"+changeToHexString(r)+changeToHexString(g)+changeToHexString(b);
+    }
+    public static String changeToHexString(int i){
+        String str = Integer.toHexString(i);
+        if(str.length()==1){
+            return "0"+str;
+        }else return str;
     }
 
 
