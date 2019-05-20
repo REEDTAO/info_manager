@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reed.info_manager.mapper.ParentMapper">
+    <!--List<Parent> getParentByUserId(Integer id);-->
+    <select id="getParentByUserId" resultType="com.reed.info_manager.entity.Parent">
+        select * from parent p left join parent_user u on p.id = u.parent_id
+        where u.user_id = #{id}
+    </select>
+
+    <!--int removeParentByUserId(Integer id, Integer userId);-->
+    <delete id="removeParentByUserId">
+        delete from parent_user
+        where parent_id = #{id} and user_id = #{userId}
+    </delete>
+    <!--Parent loginParent(Integer id, String password);-->
+    <select id="loginParent" resultType="com.reed.info_manager.entity.Parent">
+        select * from parent where id = #{id} and password = #{password}
+    </select>
+
+    <!--int updateUserByUserId(Parent parent);-->
+    <update id="updateUserByUserId">
+        update parent
+            set
+            name = #{name},
+            password = #{password},
+            addr = #{addr},
+            email = #{email},
+            tel = #{tel},
+            sex = #{sex}
+          where id  = #{id}
+    </update>
+    <!--int bindStudent(Integer userId, Integer parentId);-->
+    <insert id="bindStudent" >
+        insert into parent_user values (
+          default,
+          #{parentId},
+          #{userId}
+        )
+    </insert>
+</mapper>

@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 @Component
-public class LoginInterceptor implements HandlerInterceptor {
+public class LandingStatusInterceptor implements HandlerInterceptor {
     @Autowired
     HttpSession session;
     //这个方法是在访问接口之前执行的，我们只需要在这里写验证登陆状态的业务逻辑，就可以在用户调用指定接口之前验证登陆状态了
@@ -25,13 +26,20 @@ public class LoginInterceptor implements HandlerInterceptor {
         User user = (User) session.getAttribute("user");
         Parent parent = (Parent) session.getAttribute("parent");
         Manager manager = (Manager) session.getAttribute("manager");
+
         //如果session中没有user，表示没登陆
-        if(user==null&&parent==null&&manager==null){
-            response.sendRedirect("/login");
+        if(user!=null&&parent==null&&manager==null){
+            response.sendRedirect("/index");
             return false;
-        }else{
+        }else if(parent!=null){
+            response.sendRedirect("/myInfoDetail/parent");
+            return false;
+            //放行
+        }else if(manager!=null){
+            response.sendRedirect("/manager/index");
+            return false;
+        } else
             return true;
-        }
     }
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
@@ -39,5 +47,4 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
     }
-
 }

@@ -37,7 +37,7 @@
   <div class="login-box-body">
     <p class="login-box-msg">欢迎使用本系统</p>
 
-    <form action="" method="post"  id="from" onsubmit='this.action=$("input[checked]").val()'>
+    <form action="" method="post"  id="from" onsubmit='this.action=$(":radio:checked").val()'>
       <div class="form-group has-feedback">
         <input name="id" type="text" class="form-control" placeholder="学号/工号">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -51,12 +51,16 @@
       <div class="form-group">
         <div class="radio" id="target">
           <label>
-            <input type="radio" name="loginTarget" id="optionsRadios1" value="./login/user" checked>
+            <input type="radio" name="loginTarget" id="optionsRadios1" value="./login/user" >
             普通用户
           </label>
-      
 
-       
+          <label>
+            <input type="radio" name="loginTarget" id="optionsRadios2" value="./login/parent" >
+            家长
+          </label>
+
+
           <label>
             <input type="radio" name="loginTarget" id="optionsRadios3" value="./login/manager" >
            管理员
@@ -80,14 +84,14 @@
         <!-- /.col -->
       </div>
     </form>
-   
+
 
 
 
     <!-- /.social-auth-links -->
 
     <a href="#" >忘记密码</a><br>
-    
+
 
 
   </div>
@@ -102,8 +106,14 @@
 <!-- iCheck -->
 <script src="/static/plugins/iCheck/icheck.min.js"></script>
 <script>
+  function submitClick() {
+    $("form").action=$("input[type='radio']").val()
+  }
+function test() {
+  // $("input[checked]").val()
+  alert($(":radio:checked").val());
+}
 
- 
 </script>
 </body>
 </html>

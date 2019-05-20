@@ -3,27 +3,22 @@ package com.reed.info_manager.controller;
 import com.reed.info_manager.constant.Constant;
 import com.reed.info_manager.entity.*;
 import com.reed.info_manager.service.*;
-import com.reed.info_manager.utils.FileUtils;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
+
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
 
 import javax.servlet.http.HttpSession;
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import static com.reed.info_manager.constant.Constant.FILE_ROOT_DIR;
+
 
 @Controller
 @RequestMapping("/infoAnalysis")
@@ -37,6 +32,8 @@ public class InfoAnalysisController {
     HttpSession session;
     @Autowired
     TaskReplyService taskReplyService;
+    @Autowired
+    UserService userService;
 
 
     @GetMapping
@@ -65,8 +62,6 @@ public class InfoAnalysisController {
             session.setAttribute("targetList",groupNameList);
             model.addAttribute("targetList",groupNameList);
         }
-
-
         return "info/infoAnalysisIndex";
     }
 
@@ -83,10 +78,6 @@ public class InfoAnalysisController {
     }
 
 
-    @GetMapping("/test")
-    public void test(SpringTemplateEngine engine) throws IOException {
-
-    }
 
     @GetMapping("/getPieChartData")
     @ResponseBody
@@ -145,6 +136,20 @@ public class InfoAnalysisController {
         map.put("userId",userId);
 
         return map;
+    }
+
+    @GetMapping("/bindStudentDetail/{userId}")
+    public String bindStudentDetail(@PathVariable("userId")Integer userId,Model model){
+        User user = userService.getUserDetailByUserId(userId);
+        session.setAttribute("user",user);
+        getInfoAnalysis(model);
+        return "parent/studentInfoAnalysisIndex";
+    }
+
+    @PostMapping("/parent/getMyTrack")
+    public String parentGetMyTrack(String userGroupName,Model model){
+        getMyTrack(userGroupName,model);
+        return "parent/studentInfoAnalysisIndex";
     }
 
 

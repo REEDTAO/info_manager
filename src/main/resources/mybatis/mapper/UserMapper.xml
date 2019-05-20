@@ -29,4 +29,31 @@
     <select id="getUserNameByUserId" resultType="string">
         select name from user where id = #{id}
     </select>
+
+    <!--UserInfoDetail getUserDetailByUserId(Integer userId);-->
+    <select id="getUserDetailByUserId" resultType="com.reed.info_manager.entity.UserInfoDetail">
+        select * from user where user.id = #{userId}
+    </select>
+
+    <!--int updateUserByUserId(Integer id);-->
+    <update id="updateUserByUserId">
+        update user
+          set
+            name = #{name},
+            password = #{password},
+            addr = #{addr},
+            email = #{email},
+            tel = #{tel},
+            sex = #{sex}
+          where id  = #{id}
+    </update>
+
+    <!--List<User> getUserByParentId(Integer id);-->
+    <select id="getUserByParentId" resultType="com.reed.info_manager.entity.User">
+        select * from user u where u.id  in (select user_id from parent_user where parent_id=#{id})
+    </select>
+    <!--int findUserByIdAndName(@Param("id") Integer id,@Param("name") String name);-->
+    <select id="findUserByIdAndName" resultType="int">
+        select count(*) from user where id=#{id} and name = #{name}
+    </select>
 </mapper>

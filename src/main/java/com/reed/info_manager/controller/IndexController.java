@@ -27,4 +27,9 @@ public class IndexController {
         model.addAttribute("list",list);
         return "indexPage";
     }
+
+    @GetMapping("/parent")
+    public String getParentIndex(){
+        return "parent/index";
+    }
 }
