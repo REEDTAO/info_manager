@@ -43,4 +43,17 @@ public class UserService {
     public int findUserByIdAndName(Integer id, String name) {
         return userDao.findUserByIdAndName(id,name);
     }
+
+
+    public List<User> searchUserByName(String name) {
+        return userDao.searchUserByName(name);
+    }
+
+    public List<User> searchUserById(Integer id) {
+        return userDao.searchUserById(id);
+    }
+
+    public int deleteUserByUserId(Integer userId) {
+        return userDao.deleteUserByUserId(userId);
+    }
 }

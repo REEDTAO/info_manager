@@ -22,4 +22,10 @@ public interface UserMapper {
     List<User> getUserByParentId(Integer id);
 
     int findUserByIdAndName(@Param("id") Integer id,@Param("name") String name);
+
+    List<User> searchUserByName(String name);
+
+    List<User> searchUserById(Integer id);
+
+    int deleteUserByUserId(Integer userId);
 }

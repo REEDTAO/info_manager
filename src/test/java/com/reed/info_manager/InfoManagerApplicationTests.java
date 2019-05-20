@@ -10,6 +10,7 @@ import com.reed.info_manager.entity.User;
 import com.reed.info_manager.mapper.UserGroupMapper;
 import com.reed.info_manager.mapper.UserRoleMapper;
 import com.reed.info_manager.service.*;
+import com.reed.info_manager.utils.ExcelUtils;
 import com.reed.info_manager.utils.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,24 +108,8 @@ public class InfoManagerApplicationTests {
     }
     @Test
     public void testHtmlEngine() throws IOException {
-        Context context = new Context();
-        List<Track> list = taskReplyService.getTaskReplyByTaskGroupNameAndUserId(35,3);
-        context.setVariable("list",list);
-        String result = engine.process("public/track",context);
-        File file = new File(Constant.FILE_ROOT_DIR+"temp/卢2/"+"track1.html");
-        file.getParentFile().mkdirs();
-        file.createNewFile();
-        FileOutputStream out = new FileOutputStream(file);
-        out.write(result.getBytes());
-        out.close();
-
-
-        List<String> fileList= new ArrayList<>();
-        fileList.add("temp/卢2/"+"track1.html");
-        for (Track track : list){
-            fileList.add(track.getFilePath());
-        }
-        FileUtils.packMyTrack("卢2",fileList);
+        List<User> list = ExcelUtils.parseFileToUserList("/Users/luweitao/Desktop/testExcel.xlsx");
+        System.out.println(list);
 
 
     }

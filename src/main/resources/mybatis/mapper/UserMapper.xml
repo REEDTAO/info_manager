@@ -56,4 +56,17 @@
     <select id="findUserByIdAndName" resultType="int">
         select count(*) from user where id=#{id} and name = #{name}
     </select>
+
+    <!--List<User> searchUserByName(String name);-->
+    <select id="searchUserByName" resultType="com.reed.info_manager.entity.User">
+        select * from user where name like CONCAT('%',#{name},'%')
+    </select>
+    <!--List<User> searchUserById(Integer id);-->
+    <select id="searchUserById" resultType="com.reed.info_manager.entity.User">
+        select * from user where id = #{id}
+    </select>
+    <!--int deleteUserByUserId(Integer userId);-->
+    <delete id="deleteUserByUserId">
+        delete from user where user.id = #{userId}
+    </delete>
 </mapper>

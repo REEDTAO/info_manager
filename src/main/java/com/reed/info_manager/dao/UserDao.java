@@ -39,4 +39,16 @@ public class UserDao {
     public int findUserByIdAndName(Integer id, String name) {
         return userMapper.findUserByIdAndName(id,name);
     }
+
+    public List<User> searchUserByName(String name) {
+        return userMapper.searchUserByName(name);
+    }
+
+    public List<User> searchUserById(Integer id) {
+        return userMapper.searchUserById(id);
+    }
+
+    public int deleteUserByUserId(Integer userId) {
+        return userMapper.deleteUserByUserId(userId);
+    }
 }
