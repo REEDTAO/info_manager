@@ -1,6 +1,7 @@
 package com.reed.info_manager.dao;
 
 import com.reed.info_manager.entity.Parent;
+import com.reed.info_manager.entity.User;
 import com.reed.info_manager.mapper.ParentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -33,5 +34,29 @@ public class ParentDao {
 
     public int bindStudent(Integer parentId, Integer userId) {
         return parentMapper.bindStudent(parentId,userId);
+    }
+
+    public List<Parent> searchUserByName(String name) {
+        return parentMapper.searchUserByName(name);
+    }
+
+    public List<Parent> searchParentById(Integer id) {
+        return parentMapper.searchParentById(id);
+    }
+
+    public Integer updateParentByUserId(Parent parent) {
+        return parentMapper.updateParentByUserId(parent);
+    }
+
+    public Integer deleteParentByUserId(Integer parentId) {
+        return parentMapper.deleteParentByUserId(parentId);
+    }
+
+    public Integer addParents(List<User> list) {
+        return parentMapper.addParents(list);
+    }
+
+    public int registerParent(Parent parent) {
+        return parentMapper.registerParent(parent);
     }
 }

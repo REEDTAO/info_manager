@@ -28,4 +28,8 @@ public interface TaskMapper {
     int finishTask(Integer taskId);
 
     List<Task> getMyReceiveTaskListUnfinishedOrderByTime(Integer id);
+
+    List<Task> getTaskByTitle(String title);
+
+    List<Task> getTaskByCreatorId(Integer creatorId);
 }

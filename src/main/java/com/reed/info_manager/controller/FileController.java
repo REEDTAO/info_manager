@@ -61,11 +61,9 @@ public class FileController {
 
     public static void createMyTrack(SpringTemplateEngine engine, List<Track> list,String userName) throws IOException {
         Context context = new Context();
-        //List<Track> list = taskReplyService.getTaskReplyByTaskGroupNameAndUserId(35,3);
         context.setVariable("list",list);
         String result = engine.process("public/track",context);
         File file = new File(Constant.FILE_ROOT_DIR+"temp/"+userName+"/track.html");
-        //System.out.println(Constant.FILE_ROOT_DIR+"temp/2/track1.html");
         if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
         if(file.exists()) file.delete();
         file.createNewFile();

@@ -155,7 +155,6 @@
                             <li th:each="track : ${list}" th:inline="text">
                                 <i class="fa fa-user bg-aqua"></i>
                                 <div class="timeline-item">
-
                                     <h3 class="timeline-header">[[${#dates.format(track.replyTime,'yyyy-MM-dd')}]] ----任务标题：[[${track.taskTitle}]]</h3>
                                     <div class="timeline-body">
                                       回复内容：  [[${track.content}]]
@@ -255,14 +254,10 @@
 
 
     $(function() {
-
         $.get("/infoAnalysis/getPieChartData", function (data, status) {
             var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
             var pieChart = new Chart(pieChartCanvas);
             var PieData = data;
-            // <li ><i class="fa fa-circle-o text-red"></i> Chrome</li>
-
-            //console.log(data);
 
             var element_li = function (data) {
                 var str = "";
@@ -273,7 +268,6 @@
                 return str;
             }
             $("#list").append(element_li(data));
-
             var pieOptions = {
                 //Boolean - Whether we should show a stroke on each segment
                 segmentShowStroke: true,

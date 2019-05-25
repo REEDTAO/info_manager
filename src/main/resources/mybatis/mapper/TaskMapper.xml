@@ -86,8 +86,18 @@
           where task_id = #{taskId}
     </update>
 
+
     <!--int finishTask(Integer taskId);-->
     <update id="finishTask">
         update task set task_finished = 1 where task_id = #{taskId}
     </update>
+
+    <!--List<Task> getTaskByTitle(String title);-->
+    <select id="getTaskByTitle" resultType="com.reed.info_manager.entity.Task">
+        select * from task where task_title like CONCAT('%',#{title},'%')
+    </select>
+    <!--List<Task> getTaskByCreatorId(Integer creatorId);-->
+    <select id="getTaskByCreatorId" resultType="com.reed.info_manager.entity.Task">
+        select * from task where task_creator_id = #{creatorId}
+    </select>
 </mapper>

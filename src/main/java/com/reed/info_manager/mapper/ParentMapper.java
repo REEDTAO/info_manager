@@ -1,6 +1,7 @@
 package com.reed.info_manager.mapper;
 
 import com.reed.info_manager.entity.Parent;
+import com.reed.info_manager.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +20,16 @@ public interface ParentMapper {
     int removeStudentByUserId(Integer userId, Integer id);
 
     int bindStudent(@Param("parentId") Integer parentId, @Param("userId") Integer userId);
+
+    List<Parent> searchUserByName(String name);
+
+    List<Parent> searchParentById(Integer id);
+
+    Integer updateParentByUserId(Parent parent);
+
+    Integer deleteParentByUserId(Integer parentId);
+
+    Integer addParents(List<User> list);
+
+    int registerParent(Parent parent);
 }

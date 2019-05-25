@@ -52,4 +52,12 @@ public class TaskService {
     public List<Task> getMyReceiveTaskListUnfinishedOrderByTime(Integer id) {
         return taskDao.getMyReceiveTaskListUnfinishedOrderByTime(id);
     }
+
+    public List<Task> getTaskByTitle(String title) {
+        return taskDao.getTaskByTitle(title);
+    }
+
+    public List<Task> getTaskByCreatorId(Integer creatorId) {
+        return taskDao.getTaskByCreatorId(creatorId);
+    }
 }

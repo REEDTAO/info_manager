@@ -80,4 +80,12 @@ public class TaskDao {
     public List<Task> getMyReceiveTaskListUnfinishedOrderByTime(Integer id) {
         return taskMapper.getMyReceiveTaskListUnfinishedOrderByTime(id);
     }
+
+    public List<Task> getTaskByTitle(String title) {
+        return taskMapper.getTaskByTitle(title);
+    }
+
+    public List<Task> getTaskByCreatorId(Integer creatorId) {
+        return taskMapper.getTaskByCreatorId(creatorId);
+    }
 }

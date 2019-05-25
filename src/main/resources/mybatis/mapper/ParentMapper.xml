@@ -39,4 +39,56 @@
           #{userId}
         )
     </insert>
+    <!--List<Parent> searchUserByName(String name);-->
+    <select id="searchUserByName" resultType="com.reed.info_manager.entity.Parent">
+        select * from parent where name like CONCAT('%',#{name},'%')
+    </select>
+    <!--List<Parent> searchParentById(Integer id);-->
+    <select id="searchParentById" resultType="com.reed.info_manager.entity.Parent">
+        select * from parent where id = #{id}
+    </select>
+    <!--Integer updateParentByUserId(Parent parent);-->
+    <update id="updateParentByUserId">
+        update parent
+          set
+            name = #{name},
+            password = #{password},
+            addr = #{addr},
+            email = #{email},
+            tel = #{tel},
+            sex = #{sex}
+          where id  = #{id}
+    </update>
+    <!--Integer deleteParentByUserId(Integer parentId);-->
+    <delete id="deleteParentByUserId">
+        delete from parent where id = #{parentId}
+    </delete>
+    <!--Integer addParents(List<User> list);-->
+    <insert id="addParents" >
+        insert into parent(id,name,password,addr,email,tel,sex) values
+        <foreach collection="list" item="user" separator=",">
+            (
+            default,
+            #{user.name},
+            #{user.password},
+            #{user.addr},
+            #{user.email},
+            #{user.tel},
+            #{user.sex}
+            )
+        </foreach>
+    </insert>
+
+    <!--int registerParent(Parent parent);-->
+    <insert id="registerParent" >
+        insert into parent values (
+            #{id},
+            #{name},
+            #{password},
+            #{addr},
+            #{email},
+            #{tel},
+            #{sex}
+        )
+    </insert>
 </mapper>

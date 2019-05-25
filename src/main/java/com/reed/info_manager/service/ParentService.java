@@ -2,6 +2,7 @@ package com.reed.info_manager.service;
 
 import com.reed.info_manager.dao.ParentDao;
 import com.reed.info_manager.entity.Parent;
+import com.reed.info_manager.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,29 @@ public class ParentService {
 
     public int bindStudent(Integer parentId, Integer userId) {
         return parentDao.bindStudent(parentId,userId);
+    }
+
+    public List<Parent> searchUserByName(String name) {
+        return parentDao.searchUserByName(name);
+    }
+
+    public List<Parent> searchParentById(Integer id) {
+        return parentDao.searchParentById(id);
+    }
+
+    public Integer updateParentByUserId(Parent parent) {
+        return parentDao.updateParentByUserId(parent);
+    }
+
+    public Integer deleteParentByUserId(Integer parentId) {
+        return parentDao.deleteParentByUserId(parentId);
+    }
+
+    public Integer addParents(List<User> list) {
+        return parentDao.addParents(list);
+    }
+
+    public int registerParent(Parent parent) {
+        return parentDao.registerParent(parent);
     }
 }

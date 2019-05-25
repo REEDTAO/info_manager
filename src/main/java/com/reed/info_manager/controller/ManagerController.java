@@ -1,7 +1,9 @@
 package com.reed.info_manager.controller;
 
 import com.reed.info_manager.entity.Manager;
+import com.reed.info_manager.entity.Parent;
 import com.reed.info_manager.entity.User;
+import com.reed.info_manager.service.ParentService;
 import com.reed.info_manager.service.UserService;
 import com.reed.info_manager.utils.ExcelUtils;
 import com.reed.info_manager.utils.FileUtils;
@@ -30,57 +32,87 @@ public class ManagerController {
     UserService userService;
     @Autowired
     HttpSession session;
+    @Autowired
+    ParentService parentService;
 
     @GetMapping("/index")
     public String managerIndex(){
         return "manager/userInfoManage";
     }
 
-    @GetMapping("/user/searchName/{name}")
+    @GetMapping("/{role}/searchName/{name}")
     @ResponseBody
-    public Map  searchName(@PathVariable("name") String name){
+    public Map  searchName(@PathVariable("name") String name,@PathVariable("role") String role){
         Map<String,Object> map = new HashMap<>();
-        List<User> list = userService.searchUserByName(name);
+        List list=null;
+        if(role.equals("user"))
+            list = userService.searchUserByName(name);
+        else
+            list=parentService.searchUserByName(name);
         map.put("data",list);
         return map;
     }
-    @GetMapping("/user/searchId/{id}")
+    @GetMapping("/{role}/searchId/{id}")
     @ResponseBody
-    public Map  searcId(@PathVariable("id") Integer id){
+    public Map  searcId(@PathVariable("id") Integer id,@PathVariable("role")String role){
         Map<String,Object> map = new HashMap<>();
-        List<User> list = userService.searchUserById(id);
+        List list=null;
+        if(role.equals("user"))
+            list = userService.searchUserById(id);
+        else
+            list = parentService.searchParentById(id);
         map.put("data",list);
         return map;
     }
-    @PostMapping("/user/update")
-    public String updateUser(User user, Model model){
-        if(userService.updateUserByUserId(user)==1){
+    @PostMapping("/{role}/update")
+    public String updateUser(Parent parent, Model model,@PathVariable("role")String role){
+        Integer num = 0;
+        if(role.equals("user"))
+            num=userService.updateUserByUserId(parent);
+        else
+            num=parentService.updateParentByUserId(parent);
+        if(num==1){
             model.addAttribute("message","修改成功！");
         }else{
             model.addAttribute("message","修改失败！");
         }
-        return managerIndex();
+        if(role.equals("user"))
+            return managerIndex();
+        else
+            return parentInfoManage();
     }
-    @GetMapping("/user/delete/{userId}")
-    public String deleteUser(@PathVariable("userId")Integer userId,Model model){
-        if(userService.deleteUserByUserId(userId)==1){
+    @GetMapping("/{role}/delete/{userId}")
+    public String deleteUser(@PathVariable("userId")Integer userId,Model model,@PathVariable("role")String role){
+        Integer num = 0;
+        if(role.equals("user"))
+            num=userService.deleteUserByUserId(userId);
+        else
+            num=parentService.deleteParentByUserId(userId);
+        if(num==1){
             model.addAttribute("message","删除成功！");
         }else{
             model.addAttribute("message","删除失败！");
         }
-        return managerIndex();
+        if(role.equals("user"))
+            return managerIndex();
+        else
+            return parentInfoManage();
     }
-    @PostMapping("/user/excelImport")
-    public String userImportByExcel(MultipartFile file, Model model) {
-        Manager manager = (Manager) session.getAttribute("manager");
+    @PostMapping("/{role}/excelImport")
+    public String userImportByExcel(MultipartFile file, Model model,@PathVariable("role")String role) {
         String filePath = FILE_ROOT_DIR + "manager/temp/" + new Date().getTime();
         if (!file.isEmpty()) {
             if (!FileUtils.saveFile(file, filePath)) {
                 model.addAttribute("message", "文件保存失败！");
             } else {
                 try {
+                    Integer num = 0;
                     List<User> list = ExcelUtils.parseFileToUserList(filePath+"/"+file.getOriginalFilename());
-                    if (userService.addUsers(list)>=1){
+                    if (role.equals("user"))
+                        num=userService.addUsers(list);
+                    else
+                        num=parentService.addParents(list);
+                    if (num>=1){
                         model.addAttribute("message","导入成功！");
                     }else model.addAttribute("message","导入失败！请检查文件格式！");
                 } catch (IOException e) {
@@ -90,8 +122,24 @@ public class ManagerController {
             }
         }
         File temp = new File(filePath);
-        if(temp.exists()) temp.delete();
+        if(temp.exists()) {
+            temp.delete();
+            temp.getParentFile().delete();
+        }
+        if(role.equals("user"))
+            return managerIndex();
+        else
+            return parentInfoManage();
+    }
+
+    @GetMapping("/userInfoManage")
+    public String userInfoManage(){
         return managerIndex();
+    }
+
+    @GetMapping("/parentInfoManage")
+    public String parentInfoManage(){
+        return "manager/parentInfoManage";
     }
 
 
